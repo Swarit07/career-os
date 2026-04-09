@@ -48,30 +48,39 @@ export default async function DashboardPage() {
   };
 
   const statCards = [
-    { label: "Total Applications", value: counts.total, icon: Briefcase },
-    { label: "Interviewing", value: counts.interviewing, icon: Clock },
-    { label: "Offers", value: counts.offers, icon: Trophy },
-    { label: "Rejected", value: counts.rejected, icon: XCircle },
+    { label: "Total Applications", value: counts.total, icon: Briefcase, type: "applied" as const },
+    { label: "Interviewing", value: counts.interviewing, icon: Clock, type: "interview" as const },
+    { label: "Offers", value: counts.offers, icon: Trophy, type: "offer" as const },
+    { label: "Rejected", value: counts.rejected, icon: XCircle, type: "rejected" as const },
   ];
 
   return (
     <PageTransition>
       <div className="space-y-10">
-        {/* Page header */}
+        {/* Profile Banner — Command Center */}
         <FadeUp delay={0}>
-          <h1 className="font-serif text-4xl italic text-white/90">
-            Dashboard
-          </h1>
-          <p className="mt-2 text-base text-white/40">
-            Track and manage your job applications
-          </p>
+          <div className="profile-banner">
+            <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-[var(--text-muted)]">
+              Career Command Center
+            </p>
+            <h1 className="mt-1.5 font-serif text-[2rem] italic text-[var(--text-primary)]">
+              Welcome back, <em className="not-italic text-[var(--accent-aqua)]">Dashboard</em>
+            </h1>
+            <p className="mt-1 text-sm text-[var(--text-secondary)]">
+              {new Date().toLocaleDateString("en-US", {
+                weekday: "long",
+                month: "long",
+                day: "numeric",
+              })}
+            </p>
+          </div>
         </FadeUp>
 
         {/* Stat cards */}
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {statCards.map((card, i) => (
             <FadeUp key={card.label} delay={0.08 + i * 0.07}>
-              <div className="liquid-glass p-6">
+              <div className="stat-card" data-type={card.type}>
                 <div className="flex items-center justify-between">
                   <p className="text-xs font-medium uppercase tracking-widest text-white/40">
                     {card.label}

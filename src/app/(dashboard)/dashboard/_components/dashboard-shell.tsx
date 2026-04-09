@@ -82,7 +82,10 @@ export function DashboardShell({ user, children }: DashboardShellProps) {
   }
 
   return (
-    <div className="relative flex h-screen overflow-hidden bg-black">
+    <div className="relative flex h-screen overflow-hidden bg-[var(--bg-void)]">
+      {/* Animated liquid background */}
+      <div className="liquid-bg" />
+
       {/* Desktop Sidebar — liquid glass */}
       <aside className="liquid-glass relative z-10 hidden w-64 flex-col md:flex">
         {/* Brand */}
