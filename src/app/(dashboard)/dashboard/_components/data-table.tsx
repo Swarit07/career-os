@@ -60,12 +60,12 @@ export function ApplicationsDataTable({
   });
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 p-4">
       {/* Toolbar */}
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex flex-1 items-center gap-3">
           <div className="relative flex-1 sm:max-w-xs">
-            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-white/30" />
             <Input
               placeholder="Filter companies..."
               value={
@@ -75,7 +75,7 @@ export function ApplicationsDataTable({
               onChange={(e) =>
                 table.getColumn("company_name")?.setFilterValue(e.target.value)
               }
-              className="pl-9"
+              className="border-white/[0.06] bg-white/[0.02] pl-9 text-white/80 placeholder:text-white/20 focus-visible:border-white/20 focus-visible:ring-white/10"
             />
           </div>
           <Select
@@ -88,10 +88,10 @@ export function ApplicationsDataTable({
                 ?.setFilterValue(value === "all" ? undefined : value)
             }
           >
-            <SelectTrigger className="w-[150px]">
+            <SelectTrigger className="w-[150px] border-white/[0.06] bg-white/[0.02] text-white/60">
               <SelectValue placeholder="All statuses" />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent className="border-white/[0.08] bg-black/95 backdrop-blur-xl">
               <SelectItem value="all">All statuses</SelectItem>
               <SelectItem value="Applied">Applied</SelectItem>
               <SelectItem value="Interviewing">Interviewing</SelectItem>
@@ -100,20 +100,29 @@ export function ApplicationsDataTable({
             </SelectContent>
           </Select>
         </div>
-        <Button onClick={() => setDialogOpen(true)} className="gap-2">
+        <button
+          onClick={() => setDialogOpen(true)}
+          className="liquid-glass-strong inline-flex cursor-pointer items-center gap-2 px-5 py-2.5 text-sm font-medium text-white/90 transition-transform duration-200 hover:scale-[1.02]"
+        >
           <Plus className="h-4 w-4" />
           New Application
-        </Button>
+        </button>
       </div>
 
       {/* Table */}
-      <div className="rounded-md border border-border">
+      <div className="overflow-hidden rounded-lg border border-white/[0.04]">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
+              <TableRow
+                key={headerGroup.id}
+                className="border-white/[0.04] hover:bg-transparent"
+              >
                 {headerGroup.headers.map((header) => (
-                  <TableHead key={header.id}>
+                  <TableHead
+                    key={header.id}
+                    className="text-xs uppercase tracking-wider text-white/30"
+                  >
                     {header.isPlaceholder
                       ? null
                       : flexRender(
@@ -128,7 +137,10 @@ export function ApplicationsDataTable({
           <TableBody>
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
-                <TableRow key={row.id}>
+                <TableRow
+                  key={row.id}
+                  className="border-white/[0.04] transition-colors hover:bg-white/[0.02]"
+                >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>
                       {flexRender(
@@ -145,17 +157,15 @@ export function ApplicationsDataTable({
                   colSpan={columns.length}
                   className="h-32 text-center"
                 >
-                  <div className="flex flex-col items-center gap-2 text-muted-foreground">
-                    <p>No applications yet</p>
-                    <Button
-                      variant="outline"
-                      size="sm"
+                  <div className="flex flex-col items-center gap-3 text-white/40">
+                    <p className="font-serif italic">No applications yet</p>
+                    <button
                       onClick={() => setDialogOpen(true)}
-                      className="gap-2"
+                      className="liquid-glass-strong inline-flex cursor-pointer items-center gap-2 px-4 py-2 text-sm text-white/70 transition-transform duration-200 hover:scale-[1.02]"
                     >
                       <Plus className="h-4 w-4" />
                       Add your first application
-                    </Button>
+                    </button>
                   </div>
                 </TableCell>
               </TableRow>
@@ -165,28 +175,29 @@ export function ApplicationsDataTable({
       </div>
 
       {/* Pagination */}
-      <div className="flex items-center justify-between">
-        <p className="text-sm text-muted-foreground">
+      <div className="flex items-center justify-between px-1">
+        <p className="text-sm text-white/30">
           {table.getFilteredRowModel().rows.length} application(s)
         </p>
         <div className="flex items-center gap-2">
           <Button
-            variant="outline"
+            variant="ghost"
             size="sm"
             onClick={() => table.previousPage()}
             disabled={!table.getCanPreviousPage()}
+            className="text-white/40 hover:text-white/60 disabled:text-white/10"
           >
             <ChevronLeft className="h-4 w-4" />
           </Button>
-          <span className="text-sm text-muted-foreground">
-            Page {table.getState().pagination.pageIndex + 1} of{" "}
-            {table.getPageCount()}
+          <span className="stat-number text-sm text-white/40">
+            {table.getState().pagination.pageIndex + 1} / {table.getPageCount()}
           </span>
           <Button
-            variant="outline"
+            variant="ghost"
             size="sm"
             onClick={() => table.nextPage()}
             disabled={!table.getCanNextPage()}
+            className="text-white/40 hover:text-white/60 disabled:text-white/10"
           >
             <ChevronRight className="h-4 w-4" />
           </Button>

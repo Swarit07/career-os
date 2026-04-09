@@ -1,17 +1,20 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Instrument_Serif, Barlow } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const instrumentSerif = Instrument_Serif({
+  weight: "400",
+  style: ["normal", "italic"],
   subsets: ["latin"],
+  variable: "--font-instrument-serif",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const barlow = Barlow({
+  weight: ["300", "400", "500", "600", "700"],
   subsets: ["latin"],
+  variable: "--font-barlow",
 });
 
 export const metadata: Metadata = {
@@ -27,14 +30,14 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable}`}
+      className={`${instrumentSerif.variable} ${barlow.variable} dark`}
       suppressHydrationWarning
     >
-      <body className="min-h-screen bg-background text-foreground antialiased">
+      <body className="min-h-screen bg-black text-white antialiased">
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
-          enableSystem
+          forcedTheme="dark"
           disableTransitionOnChange
         >
           <TooltipProvider>{children}</TooltipProvider>

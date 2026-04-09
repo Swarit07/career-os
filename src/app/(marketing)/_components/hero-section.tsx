@@ -1,71 +1,80 @@
 "use client";
 
 import Link from "next/link";
+import { ArrowRight } from "lucide-react";
+
+function StarIcon() {
+  return (
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 16 16"
+      fill="#FF801E"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path d="M8 0.5L9.79 5.81H15.5L10.85 9.19L12.64 14.5L8 11.12L3.36 14.5L5.15 9.19L0.5 5.81H6.21L8 0.5Z" />
+    </svg>
+  );
+}
 
 export function HeroSection() {
   return (
-    <section className="relative flex min-h-screen items-center justify-center overflow-hidden">
-      {/* Video background */}
-      <video
-        autoPlay
-        loop
-        muted
-        playsInline
-        className="absolute inset-0 h-full w-full object-cover"
-      >
-        <source
-          src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260210_031346_d87182fb-b0af-4273-84d1-c6fd17d6bf0f.mp4"
-          type="video/mp4"
-        />
-      </video>
-
-      {/* Dark overlay for contrast */}
-      <div className="absolute inset-0 bg-black/50" />
-
-      {/* Content */}
-      <div className="relative z-10 flex flex-col items-center px-6 text-center">
-        {/* Glassmorphism pill */}
-        <div className="mb-8 flex items-center gap-2.5 rounded-full border border-white/15 bg-white/10 px-4 py-2 backdrop-blur-md font-[family-name:var(--font-cabin)]">
-          <span className="rounded-full bg-[#7b39fc] px-2.5 py-0.5 text-xs font-semibold uppercase tracking-wider text-white">
-            New
-          </span>
-          <span className="text-sm text-white/90">
-            Say Hello to Datacore v3.2
-          </span>
+    <div className="flex flex-col justify-center py-20 lg:py-0">
+      {/* Social proof badge */}
+      <div className="mb-8 inline-flex w-fit items-center gap-2 rounded-full bg-gray-100 px-4 py-2">
+        <div className="flex items-center gap-0.5">
+          {Array.from({ length: 5 }).map((_, i) => (
+            <StarIcon key={i} />
+          ))}
         </div>
-
-        {/* Headline */}
-        <h1 className="max-w-4xl font-[family-name:var(--font-instrument-serif)] text-5xl leading-[1.1] tracking-tight text-white md:text-7xl lg:text-[96px]">
-          Book your perfect stay instantly{" "}
-          <em className="not-italic" style={{ fontStyle: "italic" }}>
-            and
-          </em>{" "}
-          hassle-free
-        </h1>
-
-        {/* Subtext */}
-        <p className="mt-6 max-w-[662px] font-[family-name:var(--font-inter)] text-base leading-relaxed text-white/70 md:text-lg">
-          Seamlessly manage your bookings with our intuitive platform. From
-          discovery to checkout, experience the future of hassle-free
-          reservations.
-        </p>
-
-        {/* CTA buttons */}
-        <div className="mt-10 flex flex-col items-center gap-4 sm:flex-row">
-          <Link
-            href="/login"
-            className="rounded-[10px] bg-[#7b39fc] px-7 py-3.5 font-[family-name:var(--font-cabin)] text-base font-medium text-white transition-colors hover:bg-[#8f55fd]"
-          >
-            Book a Free Demo
-          </Link>
-          <Link
-            href="/login"
-            className="rounded-[10px] bg-[#2b2344] px-7 py-3.5 font-[family-name:var(--font-cabin)] text-base font-medium text-[#f6f7f9] transition-colors hover:bg-[#3a3058]"
-          >
-            Get Started Now
-          </Link>
-        </div>
+        <span className="font-[family-name:var(--font-inter)] text-sm text-gray-600">
+          Rated 4.9/5 by 2700+ users
+        </span>
       </div>
-    </section>
+
+      {/* Headline */}
+      <h1
+        className="font-[family-name:var(--font-fustat)] font-bold text-gray-900"
+        style={{
+          fontSize: "clamp(40px, 5vw, 75px)",
+          lineHeight: 1.05,
+          letterSpacing: "-2px",
+        }}
+      >
+        Track smarter,
+        <br />
+        land faster
+      </h1>
+
+      {/* Subheadline */}
+      <p className="mt-6 max-w-[540px] font-[family-name:var(--font-inter)] text-lg leading-relaxed text-gray-500 tracking-[-1px]">
+        Effortlessly manage your applications, track every interview, and land
+        your dream internship with our intuitive tracker.
+      </p>
+
+      {/* Primary CTA */}
+      <Link
+        href="/login"
+        className="mt-10 inline-flex w-fit cursor-pointer items-center gap-2 rounded-[16px] px-8 py-4 font-[family-name:var(--font-inter)] font-medium text-white transition-transform hover:scale-[1.02]"
+        style={{
+          background: "rgba(0,132,255,0.8)",
+          backdropFilter: "blur(2px)",
+          boxShadow: "inset 0px 4px 4px 0px rgba(255,255,255,0.35)",
+        }}
+      >
+        Get Started Now
+        <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white/25">
+          <ArrowRight className="h-4 w-4" />
+        </span>
+      </Link>
+
+      {/* Sign in link */}
+      <p className="mt-4 font-[family-name:var(--font-inter)] text-sm text-gray-500">
+        Already have an account?{" "}
+        <Link href="/login" className="text-blue-500 hover:underline">
+          Sign in
+        </Link>
+      </p>
+    </div>
   );
 }
