@@ -111,8 +111,8 @@ export function NewApplicationDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="liquid-glass-strong border-white/[0.06] bg-black/80 backdrop-blur-2xl sm:max-w-lg">
-        <DialogHeader>
+      <DialogContent className="liquid-glass-strong flex max-h-[90dvh] flex-col border-white/[0.06] bg-black/80 backdrop-blur-2xl sm:max-w-lg">
+        <DialogHeader className="shrink-0">
           <DialogTitle className="font-serif text-xl italic text-white/90">
             New Application
           </DialogTitle>
@@ -121,7 +121,8 @@ export function NewApplicationDialog({
           </DialogDescription>
         </DialogHeader>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="flex min-h-0 flex-1 flex-col">
+        <div className="flex-1 space-y-4 overflow-y-auto pr-1">
           <div className="grid gap-4 sm:grid-cols-2">
             <div className="space-y-2">
               <Label htmlFor="company_name" className="text-white/50">
@@ -241,9 +242,11 @@ export function NewApplicationDialog({
             />
           </div>
 
-          {error && <p className="text-sm text-red-400/70">{error}</p>}
+        </div>
 
-          <DialogFooter>
+          {error && <p className="mt-4 shrink-0 text-sm text-red-400/70">{error}</p>}
+
+          <DialogFooter className="mt-4 shrink-0">
             <button
               type="button"
               onClick={() => onOpenChange(false)}
