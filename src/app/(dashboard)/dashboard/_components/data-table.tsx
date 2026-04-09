@@ -139,7 +139,7 @@ export function ApplicationsDataTable({
               table.getRowModel().rows.map((row) => (
                 <TableRow
                   key={row.id}
-                  className="border-white/[0.04] transition-colors hover:bg-white/[0.02]"
+                  className="app-row border-white/[0.04]"
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id} className="px-5 py-4">
@@ -152,16 +152,19 @@ export function ApplicationsDataTable({
                 </TableRow>
               ))
             ) : (
-              <TableRow>
+              <TableRow className="hover:bg-transparent">
                 <TableCell
                   colSpan={columns.length}
-                  className="h-40 text-center"
+                  className="py-8"
                 >
-                  <div className="flex flex-col items-center gap-4 text-white/40">
-                    <p className="font-serif text-lg italic">No applications yet</p>
+                  <div className="empty-state mx-auto max-w-sm">
+                    <div className="mb-2 text-[28px] opacity-30">&#9672;</div>
+                    <p className="font-serif text-sm italic text-[var(--text-muted)]">
+                      Your next opportunity is out there. Fire off an application.
+                    </p>
                     <button
                       onClick={() => setDialogOpen(true)}
-                      className="liquid-glass-strong inline-flex cursor-pointer items-center gap-2 px-5 py-2.5 text-sm text-white/70 transition-transform duration-200 hover:scale-[1.02]"
+                      className="liquid-glass-strong mt-4 inline-flex cursor-pointer items-center gap-2 px-5 py-2.5 text-sm text-white/70 transition-transform duration-200 hover:scale-[1.02]"
                     >
                       <Plus className="h-4 w-4" />
                       Add your first application

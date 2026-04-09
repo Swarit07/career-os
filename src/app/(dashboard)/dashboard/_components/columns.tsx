@@ -32,27 +32,27 @@ import type { Application, ApplicationStatus } from "@/lib/database.types";
 
 const statusConfig: Record<
   ApplicationStatus,
-  { label: string; className: string }
+  { label: string; style: React.CSSProperties; dotStatus: string }
 > = {
   Applied: {
     label: "Applied",
-    className:
-      "border-white/10 text-white/50 bg-transparent",
+    style: { borderColor: "rgba(0,212,255,0.2)", color: "var(--accent-aqua)" },
+    dotStatus: "applied",
   },
   Interviewing: {
     label: "Interviewing",
-    className:
-      "border-amber-500/20 text-amber-400/70 bg-transparent",
+    style: { borderColor: "rgba(245,158,11,0.2)", color: "var(--accent-amber)" },
+    dotStatus: "interviewing",
   },
   Offer: {
     label: "Offer",
-    className:
-      "border-emerald-500/20 text-emerald-400/70 bg-transparent",
+    style: { borderColor: "rgba(16,185,129,0.2)", color: "var(--accent-emerald)" },
+    dotStatus: "offer",
   },
   Rejected: {
     label: "Rejected",
-    className:
-      "border-red-500/20 text-red-400/60 bg-transparent",
+    style: { borderColor: "rgba(244,63,94,0.2)", color: "var(--accent-rose)" },
+    dotStatus: "rejected",
   },
 };
 
@@ -92,8 +92,10 @@ export const columns: ColumnDef<Application>[] = [
       const config = statusConfig[status];
       return (
         <span
-          className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium ${config.className}`}
+          className="inline-flex items-center gap-2 rounded-full border bg-transparent px-2.5 py-0.5 text-xs font-medium"
+          style={config.style}
         >
+          <span className="status-dot" data-status={config.dotStatus} />
           {config.label}
         </span>
       );
