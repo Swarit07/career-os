@@ -2,173 +2,122 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { ChevronDown, Menu, X } from "lucide-react";
+import { Menu, X, ArrowRight } from "lucide-react";
+
+const navLinks = [
+  { href: "#", label: "Home" },
+  { href: "#features", label: "Features" },
+  { href: "#pricing", label: "Pricing" },
+];
 
 export function HeroNavbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
-    <nav className="absolute inset-x-0 top-0 z-20 font-[family-name:var(--font-manrope)]">
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5">
-        {/* Logo */}
-        <Link href="/" className="flex items-center gap-2">
-          <svg
-            width="32"
-            height="32"
-            viewBox="0 0 32 32"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <rect width="32" height="32" rx="8" fill="#7b39fc" />
-            <path
-              d="M10 16L14 20L22 12"
-              stroke="white"
-              strokeWidth="2.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-          <span className="text-lg font-bold tracking-tight text-white">
-            Tracker
-          </span>
+    <nav className="sticky top-[30px] z-20 flex justify-center px-4">
+      {/* Glass pill */}
+      <div
+        className="flex items-center gap-8 rounded-[16px] border border-black/10 bg-white/30 px-6 py-3 backdrop-blur-[50px]"
+        style={{
+          boxShadow: "inset 0px 4px 4px 0px rgba(255,255,255,0.25)",
+        }}
+      >
+        {/* Brand */}
+        <Link
+          href="/"
+          className="font-[family-name:var(--font-fustat)] text-lg font-bold text-gray-900"
+        >
+          Tracker
         </Link>
 
         {/* Desktop nav links */}
-        <div className="hidden items-center gap-8 md:flex">
-          <Link
-            href="/"
-            className="text-sm font-medium text-white/90 transition-colors hover:text-white"
-          >
-            Home
-          </Link>
-          <button className="flex items-center gap-1 text-sm font-medium text-white/90 transition-colors hover:text-white">
-            Services
-            <ChevronDown className="h-3.5 w-3.5" />
-          </button>
-          <Link
-            href="#reviews"
-            className="text-sm font-medium text-white/90 transition-colors hover:text-white"
-          >
-            Reviews
-          </Link>
-          <Link
-            href="#contact"
-            className="text-sm font-medium text-white/90 transition-colors hover:text-white"
-          >
-            Contact us
-          </Link>
-        </div>
-
-        {/* Desktop auth buttons */}
-        <div className="hidden items-center gap-3 md:flex">
+        <div className="hidden items-center gap-6 md:flex">
+          {navLinks.map((link) => (
+            <Link
+              key={link.label}
+              href={link.href}
+              className="font-[family-name:var(--font-inter)] text-sm font-medium text-gray-600 transition-colors hover:text-gray-900"
+            >
+              {link.label}
+            </Link>
+          ))}
           <Link
             href="/login"
-            className="rounded-[10px] border border-white/30 px-5 py-2 text-sm font-medium text-white transition-colors hover:border-white/60 hover:bg-white/10"
+            className="font-[family-name:var(--font-inter)] text-sm font-medium text-gray-600 transition-colors hover:text-gray-900"
           >
             Sign In
           </Link>
-          <Link
-            href="/login"
-            className="rounded-[10px] bg-[#7b39fc] px-5 py-2 text-sm font-medium text-white transition-colors hover:bg-[#8f55fd]"
-          >
-            Get Started
-          </Link>
         </div>
+
+        {/* Desktop Sign Up button */}
+        <Link
+          href="/login"
+          className="hidden items-center gap-1.5 rounded-[12px] bg-black/5 px-4 py-2 font-[family-name:var(--font-inter)] text-sm font-medium text-gray-900 backdrop-blur-sm transition-colors hover:bg-black/10 md:inline-flex"
+        >
+          Sign Up
+          <ArrowRight className="h-3.5 w-3.5" />
+        </Link>
 
         {/* Mobile hamburger */}
         <button
           onClick={() => setMobileOpen(!mobileOpen)}
-          className="flex items-center justify-center md:hidden"
+          className="flex cursor-pointer items-center justify-center md:hidden"
           aria-label="Toggle menu"
         >
           {mobileOpen ? (
-            <X className="h-6 w-6 text-white" />
+            <X className="h-5 w-5 text-gray-900" />
           ) : (
-            <Menu className="h-6 w-6 text-white" />
+            <Menu className="h-5 w-5 text-gray-900" />
           )}
         </button>
       </div>
 
-      {/* Mobile overlay menu */}
+      {/* Mobile overlay */}
       {mobileOpen && (
-        <div className="fixed inset-0 z-30 flex flex-col bg-black/95 backdrop-blur-md md:hidden">
+        <div className="fixed inset-0 z-30 flex flex-col bg-white/95 backdrop-blur-xl md:hidden">
           <div className="flex items-center justify-between px-6 py-5">
             <Link
               href="/"
-              className="flex items-center gap-2"
+              className="font-[family-name:var(--font-fustat)] text-lg font-bold text-gray-900"
               onClick={() => setMobileOpen(false)}
             >
-              <svg
-                width="32"
-                height="32"
-                viewBox="0 0 32 32"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <rect width="32" height="32" rx="8" fill="#7b39fc" />
-                <path
-                  d="M10 16L14 20L22 12"
-                  stroke="white"
-                  strokeWidth="2.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-              <span className="text-lg font-bold tracking-tight text-white">
-                Tracker
-              </span>
+              Tracker
             </Link>
             <button
               onClick={() => setMobileOpen(false)}
+              className="cursor-pointer"
               aria-label="Close menu"
             >
-              <X className="h-6 w-6 text-white" />
+              <X className="h-5 w-5 text-gray-900" />
             </button>
           </div>
 
           <div className="flex flex-1 flex-col items-center justify-center gap-8">
-            <Link
-              href="/"
-              onClick={() => setMobileOpen(false)}
-              className="text-2xl font-medium text-white"
-            >
-              Home
-            </Link>
-            <button className="flex items-center gap-2 text-2xl font-medium text-white">
-              Services
-              <ChevronDown className="h-5 w-5" />
-            </button>
-            <Link
-              href="#reviews"
-              onClick={() => setMobileOpen(false)}
-              className="text-2xl font-medium text-white"
-            >
-              Reviews
-            </Link>
-            <Link
-              href="#contact"
-              onClick={() => setMobileOpen(false)}
-              className="text-2xl font-medium text-white"
-            >
-              Contact us
-            </Link>
-
-            <div className="mt-8 flex flex-col items-center gap-4">
+            {navLinks.map((link) => (
               <Link
-                href="/login"
+                key={link.label}
+                href={link.href}
                 onClick={() => setMobileOpen(false)}
-                className="rounded-[10px] border border-white/30 px-8 py-3 text-base font-medium text-white transition-colors hover:border-white/60 hover:bg-white/10"
+                className="font-[family-name:var(--font-inter)] text-2xl font-medium text-gray-900"
               >
-                Sign In
+                {link.label}
               </Link>
-              <Link
-                href="/login"
-                onClick={() => setMobileOpen(false)}
-                className="rounded-[10px] bg-[#7b39fc] px-8 py-3 text-base font-medium text-white transition-colors hover:bg-[#8f55fd]"
-              >
-                Get Started
-              </Link>
-            </div>
+            ))}
+            <Link
+              href="/login"
+              onClick={() => setMobileOpen(false)}
+              className="font-[family-name:var(--font-inter)] text-2xl font-medium text-gray-600"
+            >
+              Sign In
+            </Link>
+            <Link
+              href="/login"
+              onClick={() => setMobileOpen(false)}
+              className="mt-4 inline-flex items-center gap-2 rounded-[16px] bg-gray-900 px-8 py-3 font-[family-name:var(--font-inter)] text-base font-medium text-white transition-colors hover:bg-gray-800"
+            >
+              Sign Up
+              <ArrowRight className="h-4 w-4" />
+            </Link>
           </div>
         </div>
       )}
