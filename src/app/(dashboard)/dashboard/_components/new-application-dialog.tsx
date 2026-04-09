@@ -111,8 +111,8 @@ export function NewApplicationDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="liquid-glass-strong flex max-h-[90dvh] flex-col border-white/[0.06] bg-black/80 backdrop-blur-2xl sm:max-w-lg">
-        <DialogHeader className="shrink-0">
+      <DialogContent className="liquid-glass-strong border-white/[0.06] bg-black/80 backdrop-blur-2xl sm:max-w-lg">
+        <DialogHeader>
           <DialogTitle className="font-serif text-xl italic text-white/90">
             New Application
           </DialogTitle>
@@ -121,132 +121,132 @@ export function NewApplicationDialog({
           </DialogDescription>
         </DialogHeader>
 
-        <form onSubmit={handleSubmit} className="flex min-h-0 flex-1 flex-col">
-        <div className="flex-1 space-y-4 overflow-y-auto pr-1">
-          <div className="grid gap-4 sm:grid-cols-2">
-            <div className="space-y-2">
-              <Label htmlFor="company_name" className="text-white/50">
-                Company <span className="text-red-400/60">*</span>
-              </Label>
-              <Input
-                id="company_name"
-                placeholder="e.g. Google"
-                value={form.company_name}
-                onChange={(e) => updateField("company_name", e.target.value)}
-                className={inputStyles}
-              />
+        <form onSubmit={handleSubmit} className="space-y-4">
+          {/* Fields — scrollable on short viewports */}
+          <div className="max-h-[55vh] space-y-4 overflow-y-auto pr-1">
+            <div className="grid gap-4 sm:grid-cols-2">
+              <div className="space-y-2">
+                <Label htmlFor="company_name" className="text-white/50">
+                  Company <span className="text-red-400/60">*</span>
+                </Label>
+                <Input
+                  id="company_name"
+                  placeholder="e.g. Google"
+                  value={form.company_name}
+                  onChange={(e) => updateField("company_name", e.target.value)}
+                  className={inputStyles}
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="role_title" className="text-white/50">
+                  Role <span className="text-red-400/60">*</span>
+                </Label>
+                <Input
+                  id="role_title"
+                  placeholder="e.g. Software Engineer Intern"
+                  value={form.role_title}
+                  onChange={(e) => updateField("role_title", e.target.value)}
+                  className={inputStyles}
+                />
+              </div>
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="role_title" className="text-white/50">
-                Role <span className="text-red-400/60">*</span>
-              </Label>
-              <Input
-                id="role_title"
-                placeholder="e.g. Software Engineer Intern"
-                value={form.role_title}
-                onChange={(e) => updateField("role_title", e.target.value)}
-                className={inputStyles}
-              />
-            </div>
-          </div>
 
-          <div className="grid gap-4 sm:grid-cols-2">
-            <div className="space-y-2">
-              <Label htmlFor="status" className="text-white/50">
-                Status
-              </Label>
-              <Select
-                value={form.status}
-                onValueChange={(value) => updateField("status", value)}
-              >
-                <SelectTrigger
-                  id="status"
-                  className="border-white/[0.06] bg-white/[0.02] text-white/60"
+            <div className="grid gap-4 sm:grid-cols-2">
+              <div className="space-y-2">
+                <Label htmlFor="status" className="text-white/50">
+                  Status
+                </Label>
+                <Select
+                  value={form.status}
+                  onValueChange={(value) => updateField("status", value)}
                 >
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent className="border-white/[0.08] bg-black/95 backdrop-blur-xl">
-                  <SelectItem value="Applied">Applied</SelectItem>
-                  <SelectItem value="Interviewing">Interviewing</SelectItem>
-                  <SelectItem value="Offer">Offer</SelectItem>
-                  <SelectItem value="Rejected">Rejected</SelectItem>
-                </SelectContent>
-              </Select>
+                  <SelectTrigger
+                    id="status"
+                    className="border-white/[0.06] bg-white/[0.02] text-white/60"
+                  >
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent className="border-white/[0.08] bg-black/95 backdrop-blur-xl">
+                    <SelectItem value="Applied">Applied</SelectItem>
+                    <SelectItem value="Interviewing">Interviewing</SelectItem>
+                    <SelectItem value="Offer">Offer</SelectItem>
+                    <SelectItem value="Rejected">Rejected</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="applied_date" className="text-white/50">
+                  Applied Date
+                </Label>
+                <Input
+                  id="applied_date"
+                  type="date"
+                  value={form.applied_date}
+                  onChange={(e) => updateField("applied_date", e.target.value)}
+                  className={inputStyles}
+                />
+              </div>
             </div>
+
+            <div className="grid gap-4 sm:grid-cols-2">
+              <div className="space-y-2">
+                <Label htmlFor="salary_range" className="text-white/50">
+                  Salary Range
+                </Label>
+                <Input
+                  id="salary_range"
+                  placeholder="e.g. $80k - $100k"
+                  value={form.salary_range}
+                  onChange={(e) => updateField("salary_range", e.target.value)}
+                  className={inputStyles}
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="location" className="text-white/50">
+                  Location
+                </Label>
+                <Input
+                  id="location"
+                  placeholder="e.g. San Francisco, CA"
+                  value={form.location}
+                  onChange={(e) => updateField("location", e.target.value)}
+                  className={inputStyles}
+                />
+              </div>
+            </div>
+
             <div className="space-y-2">
-              <Label htmlFor="applied_date" className="text-white/50">
-                Applied Date
+              <Label htmlFor="job_url" className="text-white/50">
+                Job URL
               </Label>
               <Input
-                id="applied_date"
-                type="date"
-                value={form.applied_date}
-                onChange={(e) => updateField("applied_date", e.target.value)}
+                id="job_url"
+                type="url"
+                placeholder="https://..."
+                value={form.job_url}
+                onChange={(e) => updateField("job_url", e.target.value)}
+                className={inputStyles}
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="notes" className="text-white/50">
+                Notes
+              </Label>
+              <Textarea
+                id="notes"
+                placeholder="Referral contact, interview prep notes..."
+                rows={3}
+                value={form.notes}
+                onChange={(e) => updateField("notes", e.target.value)}
                 className={inputStyles}
               />
             </div>
           </div>
 
-          <div className="grid gap-4 sm:grid-cols-2">
-            <div className="space-y-2">
-              <Label htmlFor="salary_range" className="text-white/50">
-                Salary Range
-              </Label>
-              <Input
-                id="salary_range"
-                placeholder="e.g. $80k - $100k"
-                value={form.salary_range}
-                onChange={(e) => updateField("salary_range", e.target.value)}
-                className={inputStyles}
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="location" className="text-white/50">
-                Location
-              </Label>
-              <Input
-                id="location"
-                placeholder="e.g. San Francisco, CA"
-                value={form.location}
-                onChange={(e) => updateField("location", e.target.value)}
-                className={inputStyles}
-              />
-            </div>
-          </div>
+          {error && <p className="text-sm text-red-400/70">{error}</p>}
 
-          <div className="space-y-2">
-            <Label htmlFor="job_url" className="text-white/50">
-              Job URL
-            </Label>
-            <Input
-              id="job_url"
-              type="url"
-              placeholder="https://..."
-              value={form.job_url}
-              onChange={(e) => updateField("job_url", e.target.value)}
-              className={inputStyles}
-            />
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="notes" className="text-white/50">
-              Notes
-            </Label>
-            <Textarea
-              id="notes"
-              placeholder="Referral contact, interview prep notes..."
-              rows={3}
-              value={form.notes}
-              onChange={(e) => updateField("notes", e.target.value)}
-              className={inputStyles}
-            />
-          </div>
-
-        </div>
-
-          {error && <p className="mt-4 shrink-0 text-sm text-red-400/70">{error}</p>}
-
-          <DialogFooter className="mt-4 shrink-0">
+          <DialogFooter>
             <button
               type="button"
               onClick={() => onOpenChange(false)}

@@ -1,22 +1,11 @@
 "use client";
 
-// Google OAuth requires enabling the Google provider in Supabase Dashboard:
-// Authentication > Providers > Google — with a Google Cloud OAuth Client ID and Secret.
-
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Briefcase, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import { createClient } from "@/lib/supabase/client";
 
 function GoogleIcon() {
@@ -57,9 +46,7 @@ export default function LoginPage() {
     setError(null);
     const { error } = await supabase.auth.signInWithOAuth({
       provider: "google",
-      options: {
-        redirectTo: `${window.location.origin}/auth/callback`,
-      },
+      options: { redirectTo: `${window.location.origin}/auth/callback` },
     });
     if (error) {
       setError(error.message);
@@ -73,28 +60,15 @@ export default function LoginPage() {
     setError(null);
 
     if (mode === "login") {
-      const { error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
-      if (error) {
-        setError(error.message);
-        setLoading(false);
-        return;
-      }
+      const { error } = await supabase.auth.signInWithPassword({ email, password });
+      if (error) { setError(error.message); setLoading(false); return; }
     } else {
       const { error } = await supabase.auth.signUp({
         email,
         password,
-        options: {
-          emailRedirectTo: `${window.location.origin}/auth/callback`,
-        },
+        options: { emailRedirectTo: `${window.location.origin}/auth/callback` },
       });
-      if (error) {
-        setError(error.message);
-        setLoading(false);
-        return;
-      }
+      if (error) { setError(error.message); setLoading(false); return; }
     }
 
     router.push("/dashboard");
@@ -102,33 +76,36 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background p-4">
-      <Card className="w-full max-w-sm">
-        <CardHeader className="text-center">
-          <div className="mx-auto mb-2 flex h-10 w-10 items-center justify-center rounded-md bg-primary">
-            <Briefcase className="h-5 w-5 text-primary-foreground" />
+    <div className="flex min-h-screen items-center justify-center bg-black p-6">
+      <div className="w-full max-w-md">
+        {/* Brand mark */}
+        <div className="mb-10 flex flex-col items-center gap-4">
+          <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white/10">
+            <Briefcase className="h-7 w-7 text-white/80" />
           </div>
-          <CardTitle className="text-xl">
-            {mode === "login" ? "Welcome back" : "Create account"}
-          </CardTitle>
-          <CardDescription>
-            {mode === "login"
-              ? "Sign in to your Internship Tracker"
-              : "Get started tracking your applications"}
-          </CardDescription>
-        </CardHeader>
+          <div className="text-center">
+            <h1 className="font-serif text-3xl italic text-white/90">
+              {mode === "login" ? "Welcome back" : "Create account"}
+            </h1>
+            <p className="mt-2 text-base text-white/40">
+              {mode === "login"
+                ? "Sign in to your Internship Tracker"
+                : "Start tracking your applications"}
+            </p>
+          </div>
+        </div>
 
-        <CardContent className="space-y-4">
+        <div className="liquid-glass space-y-6 p-8">
           {/* Google OAuth */}
           <Button
             type="button"
             variant="outline"
-            className="w-full cursor-pointer gap-2"
+            className="h-12 w-full cursor-pointer gap-3 border-white/[0.08] bg-white/[0.02] text-base text-white/70 hover:bg-white/[0.05] hover:text-white/90"
             onClick={handleGoogleSignIn}
             disabled={googleLoading}
           >
             {googleLoading ? (
-              <Loader2 className="h-4 w-4 animate-spin" />
+              <Loader2 className="h-5 w-5 animate-spin" />
             ) : (
               <GoogleIcon />
             )}
@@ -137,15 +114,17 @@ export default function LoginPage() {
 
           {/* Divider */}
           <div className="flex items-center gap-4">
-            <div className="h-px flex-1 bg-border" />
-            <span className="text-xs uppercase text-muted-foreground">or</span>
-            <div className="h-px flex-1 bg-border" />
+            <div className="h-px flex-1 bg-white/[0.06]" />
+            <span className="text-xs uppercase tracking-widest text-white/30">or</span>
+            <div className="h-px flex-1 bg-white/[0.06]" />
           </div>
 
           {/* Email/password form */}
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-5">
             <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="email" className="text-sm text-white/50">
+                Email
+              </Label>
               <Input
                 id="email"
                 type="email"
@@ -153,10 +132,13 @@ export default function LoginPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
+                className="h-12 border-white/[0.06] bg-white/[0.02] text-base text-white/80 placeholder:text-white/20 focus-visible:border-white/20 focus-visible:ring-white/10"
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
+              <Label htmlFor="password" className="text-sm text-white/50">
+                Password
+              </Label>
               <Input
                 id="password"
                 type="password"
@@ -165,32 +147,37 @@ export default function LoginPage() {
                 onChange={(e) => setPassword(e.target.value)}
                 required
                 minLength={6}
+                className="h-12 border-white/[0.06] bg-white/[0.02] text-base text-white/80 placeholder:text-white/20 focus-visible:border-white/20 focus-visible:ring-white/10"
               />
             </div>
-            {error && <p className="text-sm text-destructive">{error}</p>}
-            <Button type="submit" className="w-full" disabled={loading}>
-              {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-              {mode === "login" ? "Sign in" : "Sign up"}
-            </Button>
-          </form>
-        </CardContent>
 
-        <CardFooter className="justify-center">
-          <Button
+            {error && (
+              <p className="text-sm text-red-400/70">{error}</p>
+            )}
+
+            <button
+              type="submit"
+              disabled={loading}
+              className="liquid-glass-strong inline-flex h-12 w-full cursor-pointer items-center justify-center gap-2 text-base font-medium text-white/90 transition-transform duration-200 hover:scale-[1.01] disabled:opacity-50"
+            >
+              {loading && <Loader2 className="h-5 w-5 animate-spin" />}
+              {mode === "login" ? "Sign in" : "Sign up"}
+            </button>
+          </form>
+        </div>
+
+        {/* Toggle mode */}
+        <p className="mt-6 text-center text-sm text-white/40">
+          {mode === "login" ? "Don't have an account?" : "Already have an account?"}{" "}
+          <button
             type="button"
-            variant="link"
-            className="text-sm text-muted-foreground"
-            onClick={() => {
-              setMode(mode === "login" ? "signup" : "login");
-              setError(null);
-            }}
+            className="cursor-pointer text-white/70 underline underline-offset-4 hover:text-white/90"
+            onClick={() => { setMode(mode === "login" ? "signup" : "login"); setError(null); }}
           >
-            {mode === "login"
-              ? "Don't have an account? Sign up"
-              : "Already have an account? Sign in"}
-          </Button>
-        </CardFooter>
-      </Card>
+            {mode === "login" ? "Sign up" : "Sign in"}
+          </button>
+        </p>
+      </div>
     </div>
   );
 }
