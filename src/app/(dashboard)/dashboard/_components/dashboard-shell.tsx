@@ -89,14 +89,14 @@ export function DashboardShell({ user, children }: DashboardShellProps) {
       {/* Desktop Sidebar — liquid glass */}
       <aside className="liquid-glass relative z-10 hidden w-64 flex-col md:flex">
         {/* Brand */}
-        <div className="flex h-16 items-center gap-3 px-6">
+        <Link href="/" className="flex h-16 items-center gap-3 px-6 transition-opacity hover:opacity-70">
           <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/10">
             <Briefcase className="h-4 w-4 text-white/80" />
           </div>
           <span className="font-serif text-lg italic text-white/90">
             Tracker
           </span>
-        </div>
+        </Link>
 
         {/* Divider */}
         <div className="mx-4 h-px bg-white/[0.06]" />
