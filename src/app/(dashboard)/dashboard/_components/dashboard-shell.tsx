@@ -29,7 +29,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { createClient } from "@/lib/supabase/client";
-import { HlsVideoBg } from "@/components/hls-video-bg";
 
 interface DashboardShellProps {
   user: {
@@ -84,12 +83,6 @@ export function DashboardShell({ user, children }: DashboardShellProps) {
 
   return (
     <div className="relative flex h-screen overflow-hidden bg-black">
-      {/* Atmospheric video background */}
-      <HlsVideoBg
-        src="https://stream.mux.com/VZtzUzGRv02OhRnZCxcNg49OilvolTqdnFLEqBsTwaxU/low.mp4"
-        fallbackSrc="https://stream.mux.com/VZtzUzGRv02OhRnZCxcNg49OilvolTqdnFLEqBsTwaxU/low.mp4"
-      />
-
       {/* Desktop Sidebar — liquid glass */}
       <aside className="liquid-glass relative z-10 hidden w-64 flex-col md:flex">
         {/* Brand */}

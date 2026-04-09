@@ -60,11 +60,11 @@ export function ApplicationsDataTable({
   });
 
   return (
-    <div className="space-y-4 p-4">
+    <div className="space-y-5 p-6">
       {/* Toolbar */}
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex flex-1 items-center gap-3">
-          <div className="relative flex-1 sm:max-w-xs">
+          <div className="relative flex-1 sm:max-w-sm">
             <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-white/30" />
             <Input
               placeholder="Filter companies..."
@@ -75,7 +75,7 @@ export function ApplicationsDataTable({
               onChange={(e) =>
                 table.getColumn("company_name")?.setFilterValue(e.target.value)
               }
-              className="border-white/[0.06] bg-white/[0.02] pl-9 text-white/80 placeholder:text-white/20 focus-visible:border-white/20 focus-visible:ring-white/10"
+              className="border-white/[0.06] bg-white/[0.02] pl-10 text-sm text-white/80 placeholder:text-white/20 focus-visible:border-white/20 focus-visible:ring-white/10"
             />
           </div>
           <Select
@@ -88,7 +88,7 @@ export function ApplicationsDataTable({
                 ?.setFilterValue(value === "all" ? undefined : value)
             }
           >
-            <SelectTrigger className="w-[150px] border-white/[0.06] bg-white/[0.02] text-white/60">
+            <SelectTrigger className="w-[160px] border-white/[0.06] bg-white/[0.02] text-sm text-white/60">
               <SelectValue placeholder="All statuses" />
             </SelectTrigger>
             <SelectContent className="border-white/[0.08] bg-black/95 backdrop-blur-xl">
@@ -102,7 +102,7 @@ export function ApplicationsDataTable({
         </div>
         <button
           onClick={() => setDialogOpen(true)}
-          className="liquid-glass-strong inline-flex cursor-pointer items-center gap-2 px-5 py-2.5 text-sm font-medium text-white/90 transition-transform duration-200 hover:scale-[1.02]"
+          className="liquid-glass-strong inline-flex cursor-pointer items-center gap-2 px-6 py-2.5 text-sm font-medium text-white/90 transition-transform duration-200 hover:scale-[1.02]"
         >
           <Plus className="h-4 w-4" />
           New Application
@@ -121,7 +121,7 @@ export function ApplicationsDataTable({
                 {headerGroup.headers.map((header) => (
                   <TableHead
                     key={header.id}
-                    className="text-xs uppercase tracking-wider text-white/30"
+                    className="px-5 py-4 text-xs uppercase tracking-widest text-white/30"
                   >
                     {header.isPlaceholder
                       ? null
@@ -142,7 +142,7 @@ export function ApplicationsDataTable({
                   className="border-white/[0.04] transition-colors hover:bg-white/[0.02]"
                 >
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
+                    <TableCell key={cell.id} className="px-5 py-4">
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext()
@@ -155,13 +155,13 @@ export function ApplicationsDataTable({
               <TableRow>
                 <TableCell
                   colSpan={columns.length}
-                  className="h-32 text-center"
+                  className="h-40 text-center"
                 >
-                  <div className="flex flex-col items-center gap-3 text-white/40">
-                    <p className="font-serif italic">No applications yet</p>
+                  <div className="flex flex-col items-center gap-4 text-white/40">
+                    <p className="font-serif text-lg italic">No applications yet</p>
                     <button
                       onClick={() => setDialogOpen(true)}
-                      className="liquid-glass-strong inline-flex cursor-pointer items-center gap-2 px-4 py-2 text-sm text-white/70 transition-transform duration-200 hover:scale-[1.02]"
+                      className="liquid-glass-strong inline-flex cursor-pointer items-center gap-2 px-5 py-2.5 text-sm text-white/70 transition-transform duration-200 hover:scale-[1.02]"
                     >
                       <Plus className="h-4 w-4" />
                       Add your first application
@@ -190,7 +190,8 @@ export function ApplicationsDataTable({
             <ChevronLeft className="h-4 w-4" />
           </Button>
           <span className="stat-number text-sm text-white/40">
-            {table.getState().pagination.pageIndex + 1} / {table.getPageCount()}
+            {table.getState().pagination.pageIndex + 1} /{" "}
+            {table.getPageCount()}
           </span>
           <Button
             variant="ghost"
@@ -204,7 +205,6 @@ export function ApplicationsDataTable({
         </div>
       </div>
 
-      {/* New Application Dialog */}
       <NewApplicationDialog open={dialogOpen} onOpenChange={setDialogOpen} />
     </div>
   );

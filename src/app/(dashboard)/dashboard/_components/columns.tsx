@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { ColumnDef } from "@tanstack/react-table";
 import {
@@ -16,6 +17,16 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { createClient } from "@/lib/supabase/client";
 import type { Application, ApplicationStatus } from "@/lib/database.types";
 
@@ -143,6 +154,7 @@ export const columns: ColumnDef<Application>[] = [
       const application = row.original;
       const router = useRouter();
       const supabase = createClient();
+      const [confirmOpen, setConfirmOpen] = useState(false);
 
       async function handleDelete() {
         const { error } = await supabase
@@ -155,54 +167,73 @@ export const columns: ColumnDef<Application>[] = [
       }
 
       return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button
-              variant="ghost"
-              className="h-8 w-8 p-0 text-white/30 hover:text-white/60"
+        <>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant="ghost"
+                className="h-8 w-8 p-0 text-white/30 hover:text-white/60"
+              >
+                <span className="sr-only">Open menu</span>
+                <MoreHorizontal className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent
+              align="end"
+              className="border-white/[0.08] bg-black/90 backdrop-blur-xl"
             >
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent
-            align="end"
-            className="border-white/[0.08] bg-black/90 backdrop-blur-xl"
-          >
-            {application.job_url && (
-              <>
-                <DropdownMenuItem asChild className="text-white/60 focus:bg-white/[0.04] focus:text-white/80">
-                  <a
-                    href={application.job_url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-2"
-                  >
-                    <ExternalLink className="h-4 w-4" />
-                    Open Job URL
-                  </a>
-                </DropdownMenuItem>
-                <DropdownMenuSeparator className="bg-white/[0.06]" />
-              </>
-            )}
-            <DropdownMenuItem
-              onClick={() =>
-                navigator.clipboard.writeText(application.company_name)
-              }
-              className="text-white/60 focus:bg-white/[0.04] focus:text-white/80"
-            >
-              Copy company name
-            </DropdownMenuItem>
-            <DropdownMenuSeparator className="bg-white/[0.06]" />
-            <DropdownMenuItem
-              className="text-red-400/70 focus:bg-red-500/10 focus:text-red-400"
-              onClick={handleDelete}
-            >
-              <Trash2 className="mr-2 h-4 w-4" />
-              Delete
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+              {application.job_url && (
+                <>
+                  <DropdownMenuItem asChild className="text-white/60 focus:bg-white/[0.04] focus:text-white/80">
+                    <a
+                      href={application.job_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-2"
+                    >
+                      <ExternalLink className="h-4 w-4" />
+                      Open Job URL
+                    </a>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator className="bg-white/[0.06]" />
+                </>
+              )}
+              <DropdownMenuItem
+                onClick={() =>
+                  navigator.clipboard.writeText(application.company_name)
+                }
+                className="text-white/60 focus:bg-white/[0.04] focus:text-white/80"
+              >
+                Copy company name
+              </DropdownMenuItem>
+              <DropdownMenuSeparator className="bg-white/[0.06]" />
+              <DropdownMenuItem
+                className="text-red-400/70 focus:bg-red-500/10 focus:text-red-400"
+                onClick={() => setConfirmOpen(true)}
+              >
+                <Trash2 className="mr-2 h-4 w-4" />
+                Delete
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+
+          <AlertDialog open={confirmOpen} onOpenChange={setConfirmOpen}>
+            <AlertDialogContent className="border-white/[0.08] bg-black/95 backdrop-blur-xl">
+              <AlertDialogHeader>
+                <AlertDialogTitle>Delete application?</AlertDialogTitle>
+                <AlertDialogDescription>
+                  This will permanently delete your {application.company_name} application. This action cannot be undone.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction variant="destructive" onClick={handleDelete}>
+                  Delete
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
+        </>
       );
     },
   },
