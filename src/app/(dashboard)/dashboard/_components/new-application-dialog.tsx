@@ -6,7 +6,6 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
@@ -43,7 +42,7 @@ function getInitialForm() {
 }
 
 const inputStyles =
-  "border-white/[0.06] bg-white/[0.02] text-white/80 placeholder:text-white/20 focus-visible:border-white/20 focus-visible:ring-white/10";
+  "h-11 text-base border-white/[0.06] bg-white/[0.02] text-white/80 placeholder:text-white/20 focus-visible:border-white/20 focus-visible:ring-white/10";
 
 export function NewApplicationDialog({
   open,
@@ -111,22 +110,23 @@ export function NewApplicationDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="liquid-glass-strong flex max-h-[90dvh] flex-col border-white/[0.06] bg-black/80 backdrop-blur-2xl sm:max-w-lg">
-        <DialogHeader>
-          <DialogTitle className="font-serif text-xl italic text-white/90">
+      <DialogContent className="liquid-glass-strong flex max-h-[85dvh] w-full flex-col gap-0 border-white/[0.08] bg-black/90 p-0 backdrop-blur-2xl sm:max-w-2xl">
+        {/* Header */}
+        <DialogHeader className="shrink-0 px-8 pt-8 pb-6 border-b border-white/[0.06]">
+          <DialogTitle className="font-serif text-2xl italic text-white/90">
             New Application
           </DialogTitle>
-          <DialogDescription className="text-white/40">
+          <DialogDescription className="text-base text-white/40">
             Add a new application to your pipeline.
           </DialogDescription>
         </DialogHeader>
 
-        <form onSubmit={handleSubmit} className="flex min-h-0 flex-1 flex-col gap-4">
-          {/* Fields — scrollable on short viewports */}
-          <div className="min-h-0 flex-1 space-y-4 overflow-y-auto pr-1">
-            <div className="grid gap-4 sm:grid-cols-2">
-              <div className="space-y-2">
-                <Label htmlFor="company_name" className="text-white/50">
+        <form onSubmit={handleSubmit} className="flex min-h-0 flex-1 flex-col">
+          {/* Scrollable fields */}
+          <div className="min-h-0 flex-1 space-y-5 overflow-y-auto px-8 py-6">
+            <div className="grid gap-5 sm:grid-cols-2">
+              <div className="space-y-2.5">
+                <Label htmlFor="company_name" className="text-sm font-medium text-white/50">
                   Company <span className="text-red-400/60">*</span>
                 </Label>
                 <Input
@@ -137,13 +137,13 @@ export function NewApplicationDialog({
                   className={inputStyles}
                 />
               </div>
-              <div className="space-y-2">
-                <Label htmlFor="role_title" className="text-white/50">
+              <div className="space-y-2.5">
+                <Label htmlFor="role_title" className="text-sm font-medium text-white/50">
                   Role <span className="text-red-400/60">*</span>
                 </Label>
                 <Input
                   id="role_title"
-                  placeholder="e.g. Software Engineer Intern"
+                  placeholder="e.g. Software Engineer"
                   value={form.role_title}
                   onChange={(e) => updateField("role_title", e.target.value)}
                   className={inputStyles}
@@ -151,9 +151,9 @@ export function NewApplicationDialog({
               </div>
             </div>
 
-            <div className="grid gap-4 sm:grid-cols-2">
-              <div className="space-y-2">
-                <Label htmlFor="status" className="text-white/50">
+            <div className="grid gap-5 sm:grid-cols-2">
+              <div className="space-y-2.5">
+                <Label htmlFor="status" className="text-sm font-medium text-white/50">
                   Status
                 </Label>
                 <Select
@@ -162,11 +162,11 @@ export function NewApplicationDialog({
                 >
                   <SelectTrigger
                     id="status"
-                    className="border-white/[0.06] bg-white/[0.02] text-white/60"
+                    className="h-11 text-base border-white/[0.06] bg-white/[0.02] text-white/60"
                   >
                     <SelectValue />
                   </SelectTrigger>
-                  <SelectContent className="border-white/[0.08] bg-black/95 backdrop-blur-xl">
+                  <SelectContent className="border-white/[0.08] bg-black/95 text-base backdrop-blur-xl">
                     <SelectItem value="Applied">Applied</SelectItem>
                     <SelectItem value="Interviewing">Interviewing</SelectItem>
                     <SelectItem value="Offer">Offer</SelectItem>
@@ -174,8 +174,8 @@ export function NewApplicationDialog({
                   </SelectContent>
                 </Select>
               </div>
-              <div className="space-y-2">
-                <Label htmlFor="applied_date" className="text-white/50">
+              <div className="space-y-2.5">
+                <Label htmlFor="applied_date" className="text-sm font-medium text-white/50">
                   Applied Date
                 </Label>
                 <Input
@@ -188,21 +188,21 @@ export function NewApplicationDialog({
               </div>
             </div>
 
-            <div className="grid gap-4 sm:grid-cols-2">
-              <div className="space-y-2">
-                <Label htmlFor="salary_range" className="text-white/50">
+            <div className="grid gap-5 sm:grid-cols-2">
+              <div className="space-y-2.5">
+                <Label htmlFor="salary_range" className="text-sm font-medium text-white/50">
                   Salary Range
                 </Label>
                 <Input
                   id="salary_range"
-                  placeholder="e.g. $80k - $100k"
+                  placeholder="e.g. $80k – $120k"
                   value={form.salary_range}
                   onChange={(e) => updateField("salary_range", e.target.value)}
                   className={inputStyles}
                 />
               </div>
-              <div className="space-y-2">
-                <Label htmlFor="location" className="text-white/50">
+              <div className="space-y-2.5">
+                <Label htmlFor="location" className="text-sm font-medium text-white/50">
                   Location
                 </Label>
                 <Input
@@ -215,8 +215,8 @@ export function NewApplicationDialog({
               </div>
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="job_url" className="text-white/50">
+            <div className="space-y-2.5">
+              <Label htmlFor="job_url" className="text-sm font-medium text-white/50">
                 Job URL
               </Label>
               <Input
@@ -229,8 +229,8 @@ export function NewApplicationDialog({
               />
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="notes" className="text-white/50">
+            <div className="space-y-2.5">
+              <Label htmlFor="notes" className="text-sm font-medium text-white/50">
                 Notes
               </Label>
               <Textarea
@@ -239,30 +239,31 @@ export function NewApplicationDialog({
                 rows={3}
                 value={form.notes}
                 onChange={(e) => updateField("notes", e.target.value)}
-                className={inputStyles}
+                className="text-base border-white/[0.06] bg-white/[0.02] text-white/80 placeholder:text-white/20 focus-visible:border-white/20 focus-visible:ring-white/10"
               />
             </div>
+
+            {error && <p className="text-sm text-red-400/70">{error}</p>}
           </div>
 
-          {error && <p className="shrink-0 text-sm text-red-400/70">{error}</p>}
-
-          <DialogFooter>
+          {/* Footer — outside scroll area, always visible */}
+          <div className="shrink-0 flex items-center justify-end gap-3 border-t border-white/[0.06] px-8 py-5">
             <button
               type="button"
               onClick={() => onOpenChange(false)}
-              className="cursor-pointer rounded-lg border border-white/[0.08] bg-transparent px-4 py-2 text-sm text-white/50 transition-colors hover:bg-white/[0.04] hover:text-white/70"
+              className="cursor-pointer rounded-lg border border-white/[0.08] bg-transparent px-5 py-2.5 text-sm font-medium text-white/50 transition-colors hover:bg-white/[0.04] hover:text-white/70"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={loading}
-              className="liquid-glass-strong inline-flex cursor-pointer items-center gap-2 px-5 py-2 text-sm font-medium text-white/90 transition-transform duration-200 hover:scale-[1.02] disabled:opacity-50"
+              className="liquid-glass-strong inline-flex cursor-pointer items-center gap-2 px-6 py-2.5 text-sm font-medium text-white/90 transition-transform duration-200 hover:scale-[1.02] disabled:opacity-50"
             >
               {loading && <Loader2 className="h-4 w-4 animate-spin" />}
               Add Application
             </button>
-          </DialogFooter>
+          </div>
         </form>
       </DialogContent>
     </Dialog>
