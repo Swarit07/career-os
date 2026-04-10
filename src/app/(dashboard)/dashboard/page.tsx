@@ -2,10 +2,11 @@ import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import type { Application } from "@/lib/database.types";
 import { Briefcase, Clock, Trophy, XCircle } from "lucide-react";
-import { ApplicationsDataTable } from "./_components/data-table";
-import { columns } from "./_components/columns";
 import { PageTransition } from "@/components/page-transition";
 import { FadeUp } from "@/components/fade-up";
+import { CsvExportButton } from "./_components/csv-export-button";
+import { ApplicationsView } from "./_components/applications-view";
+import { ChartsRow } from "./_components/charts-row";
 
 export default async function DashboardPage() {
   const supabase = await createClient();
@@ -60,19 +61,24 @@ export default async function DashboardPage() {
         {/* Profile Banner — Command Center */}
         <FadeUp delay={0}>
           <div className="profile-banner">
-            <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-[var(--text-muted)]">
-              Career Command Center
-            </p>
-            <h1 className="mt-1.5 font-serif text-[2rem] italic text-[var(--text-primary)]">
-              Welcome back, <em className="not-italic text-[var(--accent-aqua)]">Dashboard</em>
-            </h1>
-            <p className="mt-1 text-sm text-[var(--text-secondary)]">
-              {new Date().toLocaleDateString("en-US", {
-                weekday: "long",
-                month: "long",
-                day: "numeric",
-              })}
-            </p>
+            <div className="flex items-start justify-between gap-4">
+              <div>
+                <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-[var(--text-muted)]">
+                  Career Command Center
+                </p>
+                <h1 className="mt-1.5 font-serif text-[2rem] italic text-[var(--text-primary)]">
+                  Welcome back, <em className="not-italic text-[var(--accent-aqua)]">CareerOS</em>
+                </h1>
+                <p className="mt-1 text-sm text-[var(--text-secondary)]">
+                  {new Date().toLocaleDateString("en-US", {
+                    weekday: "long",
+                    month: "long",
+                    day: "numeric",
+                  })}
+                </p>
+              </div>
+              <CsvExportButton data={apps} />
+            </div>
           </div>
         </FadeUp>
 
@@ -95,11 +101,14 @@ export default async function DashboardPage() {
           ))}
         </div>
 
-        {/* Data table */}
+        {/* Charts row */}
         <FadeUp delay={0.36}>
-          <div className="liquid-glass p-1">
-            <ApplicationsDataTable columns={columns} data={apps} />
-          </div>
+          <ChartsRow data={apps} />
+        </FadeUp>
+
+        {/* Applications table / kanban */}
+        <FadeUp delay={0.44}>
+          <ApplicationsView data={apps} />
         </FadeUp>
       </div>
     </PageTransition>

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Briefcase, Loader2 } from "lucide-react";
+import { Terminal, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -81,7 +81,7 @@ export default function LoginPage() {
         {/* Brand mark */}
         <div className="mb-10 flex flex-col items-center gap-4">
           <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white/10">
-            <Briefcase className="h-7 w-7 text-white/80" />
+            <Terminal className="h-7 w-7 text-white/80" />
           </div>
           <div className="text-center">
             <h1 className="font-serif text-3xl italic text-white/90">
@@ -89,8 +89,8 @@ export default function LoginPage() {
             </h1>
             <p className="mt-2 text-base text-white/40">
               {mode === "login"
-                ? "Sign in to your Internship Tracker"
-                : "Start tracking your applications"}
+                ? "Sign in to CareerOS"
+                : "Start your career operating system"}
             </p>
           </div>
         </div>

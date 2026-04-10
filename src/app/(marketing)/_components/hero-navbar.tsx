@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Briefcase, ArrowRight } from "lucide-react";
+import { Terminal, ArrowRight } from "lucide-react";
 
 export function HeroNavbar() {
   return (
@@ -7,10 +7,10 @@ export function HeroNavbar() {
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
         <Link href="/" className="flex items-center gap-3">
           <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/10">
-            <Briefcase className="h-4 w-4 text-white/80" />
+            <Terminal className="h-4 w-4 text-white/80" />
           </div>
           <span className="font-serif text-lg italic text-white/90">
-            Tracker
+            CareerOS
           </span>
         </Link>
 
