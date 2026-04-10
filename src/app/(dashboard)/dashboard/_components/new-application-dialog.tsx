@@ -117,7 +117,7 @@ export function NewApplicationDialog({
             New Application
           </DialogTitle>
           <DialogDescription className="text-white/40">
-            Add a new job or internship application to track.
+            Add a new application to your pipeline.
           </DialogDescription>
         </DialogHeader>
 

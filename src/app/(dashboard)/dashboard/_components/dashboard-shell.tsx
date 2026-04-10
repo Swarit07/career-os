@@ -2,15 +2,16 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import {
-  Briefcase,
+  Terminal,
   LayoutDashboard,
   LogOut,
   Menu,
   Settings,
   BarChart3,
-  FileText,
+  FilePen,
+  Globe,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -40,10 +41,11 @@ interface DashboardShellProps {
 }
 
 const navItems = [
-  { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
-  { href: "/dashboard", label: "Applications", icon: FileText },
-  { href: "/dashboard", label: "Analytics", icon: BarChart3 },
-  { href: "/dashboard", label: "Settings", icon: Settings },
+  { href: "/dashboard", label: "Command Center", icon: LayoutDashboard },
+  { href: "/analytics", label: "Analytics", icon: BarChart3 },
+  { href: "/resume", label: "Resume Forge", icon: FilePen },
+  { href: "/jobs", label: "Job Market", icon: Globe },
+  { href: "/settings", label: "Settings", icon: Settings },
 ];
 
 function getInitials(name: string) {
@@ -56,16 +58,28 @@ function getInitials(name: string) {
 }
 
 function SidebarNav() {
+  const pathname = usePathname();
   return (
     <nav className="flex flex-col gap-1 px-3">
-      {navItems.map((item) => (
-        <Link key={item.label} href={item.href}>
-          <button className="flex w-full cursor-pointer items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-white/50 transition-colors duration-200 hover:bg-white/[0.04] hover:text-white/80">
-            <item.icon className="h-4 w-4" />
-            {item.label}
-          </button>
-        </Link>
-      ))}
+      {navItems.map((item) => {
+        const isActive = item.href === "/dashboard"
+          ? pathname === "/dashboard"
+          : pathname.startsWith(item.href);
+        return (
+          <Link key={item.label} href={item.href}>
+            <button
+              className={`flex w-full cursor-pointer items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors duration-200 ${
+                isActive
+                  ? "bg-white/[0.06] text-white/90"
+                  : "text-white/45 hover:bg-white/[0.04] hover:text-white/80"
+              }`}
+            >
+              <item.icon className={`h-4 w-4 ${isActive ? "text-[var(--accent-aqua)]" : ""}`} />
+              {item.label}
+            </button>
+          </Link>
+        );
+      })}
     </nav>
   );
 }
@@ -91,10 +105,10 @@ export function DashboardShell({ user, children }: DashboardShellProps) {
         {/* Brand */}
         <Link href="/" className="flex h-16 items-center gap-3 px-6 transition-opacity hover:opacity-70">
           <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/10">
-            <Briefcase className="h-4 w-4 text-white/80" />
+            <Terminal className="h-4 w-4 text-white/80" />
           </div>
           <span className="font-serif text-lg italic text-white/90">
-            Tracker
+            CareerOS
           </span>
         </Link>
 
@@ -151,9 +165,9 @@ export function DashboardShell({ user, children }: DashboardShellProps) {
               <SheetHeader className="px-6 py-4">
                 <SheetTitle className="flex items-center gap-3 text-left text-white">
                   <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/10">
-                    <Briefcase className="h-4 w-4 text-white/80" />
+                    <Terminal className="h-4 w-4 text-white/80" />
                   </div>
-                  <span className="font-serif italic">Tracker</span>
+                  <span className="font-serif italic">CareerOS</span>
                 </SheetTitle>
               </SheetHeader>
               <div className="h-px bg-white/[0.06]" />

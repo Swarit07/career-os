@@ -29,8 +29,8 @@ const fustat = Fustat({
 });
 
 export const metadata: Metadata = {
-  title: "Internship Tracker",
-  description: "Track your job and internship applications",
+  title: "CareerOS",
+  description: "The Operating System for your Career",
 };
 
 export default function RootLayout({
