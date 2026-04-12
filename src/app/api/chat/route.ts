@@ -1,5 +1,5 @@
 import { createOpenAI } from "@ai-sdk/openai";
-import { streamText } from "ai";
+import { streamText, type ModelMessage } from "ai";
 import { createClient } from "@/lib/supabase/server";
 import type { Application } from "@/lib/database.types";
 
@@ -61,7 +61,7 @@ export async function POST(req: Request) {
   }
 
   // Only accept user/assistant turns — strip any role:system injections from the client
-  const safeMessages = (messages as { role: string; content: string }[]).filter(
+  const safeMessages = (messages as ModelMessage[]).filter(
     (m) => m.role === "user" || m.role === "assistant"
   );
 
