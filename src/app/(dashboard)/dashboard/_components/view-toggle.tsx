@@ -9,25 +9,34 @@ interface ViewToggleProps {
 
 export function ViewToggle({ view, onViewChange }: ViewToggleProps) {
   return (
-    <div className="liquid-glass inline-flex items-center gap-0.5 p-0.5">
+    <div
+      className="inline-flex items-center gap-0.5 p-0.5"
+      style={{
+        background: "#f5f5f7",
+        border: "1px solid rgba(0,0,0,0.06)",
+        borderRadius: 10,
+      }}
+    >
       <button
         onClick={() => onViewChange("table")}
-        className={`flex items-center gap-1.5 rounded px-3 py-1.5 text-xs font-medium transition-colors ${
-          view === "table"
-            ? "bg-white/[0.07] text-white/90"
-            : "text-white/40 hover:text-white/70"
-        }`}
+        className="flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-medium transition-colors"
+        style={{
+          background: view === "table" ? "#ffffff" : "transparent",
+          color: view === "table" ? "#1d1d1f" : "#6e6e73",
+          boxShadow: view === "table" ? "0 1px 3px rgba(0,0,0,0.06)" : "none",
+        }}
       >
         <LayoutList className="h-3.5 w-3.5" />
         Table
       </button>
       <button
         onClick={() => onViewChange("kanban")}
-        className={`flex items-center gap-1.5 rounded px-3 py-1.5 text-xs font-medium transition-colors ${
-          view === "kanban"
-            ? "bg-white/[0.07] text-white/90"
-            : "text-white/40 hover:text-white/70"
-        }`}
+        className="flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-medium transition-colors"
+        style={{
+          background: view === "kanban" ? "#ffffff" : "transparent",
+          color: view === "kanban" ? "#1d1d1f" : "#6e6e73",
+          boxShadow: view === "kanban" ? "0 1px 3px rgba(0,0,0,0.06)" : "none",
+        }}
       >
         <Columns3 className="h-3.5 w-3.5" />
         Board

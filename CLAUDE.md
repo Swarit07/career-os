@@ -11,8 +11,7 @@ Premium job-acquisition operating system. Users sign up, log applications, track
 - **Data Tables**: `@tanstack/react-table`
 - **Charts**: `recharts` (donut chart, heatmap)
 - **Animation**: `motion` v12 (Framer Motion successor)
-- **Video**: `hls.js` (HLS streaming background)
-- **Theme**: `next-themes` (dark mode forced)
+- **Theme**: `next-themes` (dark mode forced — dashboard only; marketing page uses explicit light colors)
 - **Icons**: `lucide-react`
 - **Deployment**: Vercel
 
@@ -21,13 +20,13 @@ Premium job-acquisition operating system. Users sign up, log applications, track
 ```
 src/
 ├── app/
-│   ├── layout.tsx                    # Root layout — Instrument Serif, Barlow, Inter, Fustat via next/font
-│   ├── globals.css                   # Tailwind v4 tokens, Liquid Glass Noir design system
-│   ├── (marketing)/                  # Public pages — no auth required
+│   ├── layout.tsx                    # Root layout — Instrument Serif + Inter via next/font; dark class for dashboard
+│   ├── globals.css                   # Tailwind v4 tokens; dashboard dark system + SF Pro font stack
+│   ├── (marketing)/                  # Public pages — explicit white/light colors (bypasses dark CSS vars)
 │   │   ├── page.tsx                  # Landing page at /
 │   │   └── _components/
-│   │       ├── hero-navbar.tsx       # Sticky nav with CareerOS brand
-│   │       └── hero-section.tsx      # Full landing page content with BlurText + StaggerList
+│   │       ├── hero-navbar.tsx       # Frosted-glass Apple-style nav (logo + CTA only, no middle links)
+│   │       └── hero-section.tsx      # Apple white theme: parallax hero, scroll-triggered feature cards, CTA
 │   ├── (dashboard)/                  # Authenticated pages — proxy.ts enforces auth
 │   │   ├── layout.tsx                # Server: auth check + profile fetch → DashboardShell
 │   │   ├── dashboard/
@@ -96,22 +95,45 @@ supabase/
 
 **Planned (Phase 5)**: `resumes` table — id, user_id (fk), file_name, original_text, tailored_version, job_description, created_at, updated_at
 
-## Design System — Liquid Glass Noir
+## Design System
 
-Single dark theme (no light mode). All tokens defined in `globals.css`.
+Two distinct themes: **Apple Light** for the marketing/landing page, **Liquid Glass Noir** for the dashboard.
 
-### Colors
+### Marketing (Landing Page) — Apple Light
+
+Uses explicit inline `style` props and hardcoded hex values so the Tailwind `dark:` class on `<html>` cannot interfere.
+
+#### Colors
+- **Background**: `#ffffff` (sections), `#f5f5f7` (alternate sections — Apple off-white)
+- **Text primary**: `#1d1d1f` (Apple near-black)
+- **Text secondary**: `#6e6e73` (Apple gray)
+- **Text muted**: `#86868b`
+- **Accent / CTA**: `#0071e3` (Apple blue)
+- **Borders**: `rgba(0,0,0,0.06)` cards, `rgba(0,0,0,0.08)` footer/nav
+- **Nav badge bg**: `#f0f7ff`, border `#c7dff7`
+
+#### Typography
+- **Font**: `-apple-system, BlinkMacSystemFont, var(--font-inter), "Helvetica Neue", Arial` — SF Pro on Apple devices, Inter everywhere else
+- **Display headings**: `font-weight: 700`, `letter-spacing: -0.035em`, `line-height: ~0.94–1.05`
+- **Body**: `font-weight: 400`, `font-size: 17–22px`, `line-height: 1.55`
+- **Labels**: `11px`, `font-weight: 600`, `letter-spacing: 0.12em`, `text-transform: uppercase`
+
+#### Animations
+- **Parallax hero**: `useScroll()` + `useTransform()` — background orbs move at 25%, content at -12%, opacity fades to 0 at 28% scroll
+- **Scroll-triggered cards**: `whileInView` with `initial="offscreen"` / `animate="onscreen"` spring variants (`y: 300 → 50, rotate: -8`), `viewport: { amount: 0.3 }`; cards stack with `marginBottom: -140`
+- **Chart bars**: `whileInView` height animation per bar with staggered delay
+
+### Dashboard — Liquid Glass Noir
+
+Dark theme, CSS vars, glassmorphism. Tokens in `globals.css` `:root` and `.dark`.
+
+#### Colors
 - **Background**: `#080808` (`--bg-void`), `#0d0d0f` (`--bg-deep`)
 - **Accents**: aqua `#00d4ff`, violet `#8b5cf6`, amber `#f59e0b`, emerald `#10b981`, rose `#f43f5e`
 - **Glass**: `--glass-surface: rgba(255,255,255,0.04)`, `--glass-border: rgba(255,255,255,0.08)`
 - **Text**: primary `rgba(255,255,255,0.92)`, secondary `rgba(255,255,255,0.45)`, muted `rgba(255,255,255,0.2)`
 
-### Typography
-- **Headings/Stats**: `font-serif` = Instrument Serif (italic)
-- **UI/Body**: `font-sans` = Barlow (300–700)
-- **Mono/Dates**: `font-mono` = Geist Mono
-
-### CSS Utilities (globals.css)
+#### CSS Utilities (globals.css)
 - `.liquid-glass` — 4px blur, gradient border via mask-composite
 - `.liquid-glass-strong` — 50px blur, higher opacity, for CTAs and modals
 - `.stat-number` — serif italic with text-shadow glow, tabular-nums
@@ -121,9 +143,8 @@ Single dark theme (no light mode). All tokens defined in `globals.css`.
 - `.app-row` — table row hover with aqua left inset shadow
 - `.empty-state` — dashed border placeholder
 - `.liquid-bg` — fixed animated background (two drifting radial gradients)
-- `.video-fade-overlay` — top/bottom black gradient fade for video backgrounds
 
-### Status Colors
+#### Status Colors
 | Status | Color | CSS Var |
 |---|---|---|
 | Applied | `#00d4ff` | `--accent-aqua` |
@@ -197,7 +218,7 @@ Keep `.env.local` out of git. Use `.env.example` as template.
 | 2 | Charts, heatmap, CSV export | ✅ Done |
 | 3 | Sidebar nav, routes, Kanban board | ✅ Done |
 | 4 | Landing page video + motion | ✅ Done |
-| 5 | Resume Forge (AI tailoring) | 🔲 Next |
-| 6 | Job Market Discovery | 🔲 Planned |
-| 7 | AI Concierge chatbot | 🔲 Planned |
-| 8 | Polish & integration | 🔲 Planned |
+| 5 | Resume Forge (AI tailoring) | ✅ Done |
+| 6 | Job Market Discovery | ✅ Done |
+| 7 | AI Concierge chatbot | ✅ Done |
+| 8 | Apple Light landing page revamp | ✅ Done |

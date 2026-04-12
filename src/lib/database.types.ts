@@ -28,6 +28,17 @@ export interface Application {
   updated_at: string;
 }
 
+export interface Resume {
+  id: string;
+  user_id: string;
+  label: string;
+  original_text: string;
+  job_description: string;
+  tailored_version: string;
+  created_at: string;
+  updated_at: string;
+}
+
 export type Database = {
   public: {
     Tables: {
@@ -50,6 +61,38 @@ export type Database = {
           updated_at?: string;
         };
         Relationships: [];
+      };
+      resumes: {
+        Row: Resume;
+        Insert: {
+          id?: string;
+          user_id: string;
+          label: string;
+          original_text: string;
+          job_description: string;
+          tailored_version: string;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          user_id?: string;
+          label?: string;
+          original_text?: string;
+          job_description?: string;
+          tailored_version?: string;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "resumes_user_id_fkey";
+            columns: ["user_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+        ];
       };
       applications: {
         Row: Application;

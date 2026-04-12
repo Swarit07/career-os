@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Instrument_Serif, Barlow, Inter, Fustat } from "next/font/google";
+import { Instrument_Serif, Inter } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import "./globals.css";
@@ -11,21 +11,10 @@ const instrumentSerif = Instrument_Serif({
   variable: "--font-instrument-serif",
 });
 
-const barlow = Barlow({
+const inter = Inter({
   weight: ["300", "400", "500", "600", "700"],
   subsets: ["latin"],
-  variable: "--font-barlow",
-});
-
-const inter = Inter({
-  subsets: ["latin"],
   variable: "--font-inter",
-});
-
-const fustat = Fustat({
-  weight: ["300", "400", "500", "600", "700", "800"],
-  subsets: ["latin"],
-  variable: "--font-fustat",
 });
 
 export const metadata: Metadata = {
@@ -41,14 +30,14 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${instrumentSerif.variable} ${barlow.variable} ${inter.variable} ${fustat.variable} dark`}
+      className={`${instrumentSerif.variable} ${inter.variable}`}
       suppressHydrationWarning
     >
-      <body className="min-h-screen bg-black text-white antialiased">
+      <body className="min-h-screen bg-white text-[#1d1d1f] antialiased">
         <ThemeProvider
           attribute="class"
-          defaultTheme="dark"
-          forcedTheme="dark"
+          defaultTheme="light"
+          forcedTheme="light"
           disableTransitionOnChange
         >
           <TooltipProvider>{children}</TooltipProvider>

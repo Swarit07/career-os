@@ -7,6 +7,7 @@ import {
   ArrowUpDown,
   ExternalLink,
   MoreHorizontal,
+  Pencil,
   Trash2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -28,33 +29,41 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { createClient } from "@/lib/supabase/client";
+import { EditApplicationDialog } from "./new-application-dialog";
 import type { Application, ApplicationStatus } from "@/lib/database.types";
 
 const statusConfig: Record<
   ApplicationStatus,
-  { label: string; style: React.CSSProperties; dotStatus: string }
+  { label: string; bg: string; text: string; border: string }
 > = {
   Applied: {
     label: "Applied",
-    style: { borderColor: "rgba(0,212,255,0.2)", color: "var(--accent-aqua)" },
-    dotStatus: "applied",
+    bg: "#eff6ff",
+    text: "#0071e3",
+    border: "rgba(0,113,227,0.22)",
   },
   Interviewing: {
     label: "Interviewing",
-    style: { borderColor: "rgba(245,158,11,0.2)", color: "var(--accent-amber)" },
-    dotStatus: "interviewing",
+    bg: "#fff7ed",
+    text: "#d97706",
+    border: "rgba(217,119,6,0.22)",
   },
   Offer: {
     label: "Offer",
-    style: { borderColor: "rgba(16,185,129,0.2)", color: "var(--accent-emerald)" },
-    dotStatus: "offer",
+    bg: "#f0fdf4",
+    text: "#16a34a",
+    border: "rgba(22,163,74,0.22)",
   },
   Rejected: {
     label: "Rejected",
-    style: { borderColor: "rgba(244,63,94,0.2)", color: "var(--accent-rose)" },
-    dotStatus: "rejected",
+    bg: "#fef2f2",
+    text: "#dc2626",
+    border: "rgba(220,38,38,0.22)",
   },
 };
+
+const headerBtnStyle: React.CSSProperties = { color: "#86868b", fontWeight: 600 };
+const cellTextStyle: React.CSSProperties = { color: "#6e6e73" };
 
 export const columns: ColumnDef<Application>[] = [
   {
@@ -62,7 +71,8 @@ export const columns: ColumnDef<Application>[] = [
     header: ({ column }) => (
       <Button
         variant="ghost"
-        className="-ml-4 text-white/40 hover:text-white/60"
+        className="-ml-4 h-auto px-2 py-1"
+        style={headerBtnStyle}
         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
       >
         Company
@@ -70,32 +80,35 @@ export const columns: ColumnDef<Application>[] = [
       </Button>
     ),
     cell: ({ row }) => (
-      <div className="font-medium text-white/80">
+      <div className="font-semibold" style={{ color: "#1d1d1f" }}>
         {row.getValue("company_name")}
       </div>
     ),
   },
   {
     accessorKey: "role_title",
-    header: () => <span className="text-white/40">Role</span>,
+    header: () => <span style={headerBtnStyle}>Role</span>,
     cell: ({ row }) => (
-      <div className="max-w-[200px] truncate text-white/50">
+      <div className="max-w-[220px] truncate" style={cellTextStyle}>
         {row.getValue("role_title")}
       </div>
     ),
   },
   {
     accessorKey: "status",
-    header: () => <span className="text-white/40">Status</span>,
+    header: () => <span style={headerBtnStyle}>Status</span>,
     cell: ({ row }) => {
       const status = row.getValue("status") as ApplicationStatus;
       const config = statusConfig[status];
       return (
         <span
-          className="inline-flex items-center gap-2 rounded-full border bg-transparent px-2.5 py-0.5 text-xs font-medium"
-          style={config.style}
+          className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-medium"
+          style={{
+            background: config.bg,
+            color: config.text,
+            border: `1px solid ${config.border}`,
+          }}
         >
-          <span className="status-dot" data-status={config.dotStatus} />
           {config.label}
         </span>
       );
@@ -106,10 +119,12 @@ export const columns: ColumnDef<Application>[] = [
   },
   {
     accessorKey: "location",
-    header: () => <span className="text-white/40">Location</span>,
+    header: () => <span style={headerBtnStyle}>Location</span>,
     cell: ({ row }) => {
       const location = row.getValue("location") as string | null;
-      return <div className="text-white/40">{location ?? "\u2014"}</div>;
+      return (
+        <div style={cellTextStyle}>{location ?? "\u2014"}</div>
+      );
     },
   },
   {
@@ -117,7 +132,8 @@ export const columns: ColumnDef<Application>[] = [
     header: ({ column }) => (
       <Button
         variant="ghost"
-        className="-ml-4 text-white/40 hover:text-white/60"
+        className="-ml-4 h-auto px-2 py-1"
+        style={headerBtnStyle}
         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
       >
         Applied
@@ -126,9 +142,9 @@ export const columns: ColumnDef<Application>[] = [
     ),
     cell: ({ row }) => {
       const date = row.getValue("applied_date") as string | null;
-      if (!date) return <div className="text-white/30">{"\u2014"}</div>;
+      if (!date) return <div style={{ color: "#a1a1a6" }}>{"\u2014"}</div>;
       return (
-        <div className="stat-number text-sm text-white/50">
+        <div className="text-sm tabular-nums" style={cellTextStyle}>
           {new Date(date).toLocaleDateString("en-US", {
             month: "short",
             day: "numeric",
@@ -140,11 +156,11 @@ export const columns: ColumnDef<Application>[] = [
   },
   {
     accessorKey: "salary_range",
-    header: () => <span className="text-white/40">Salary</span>,
+    header: () => <span style={headerBtnStyle}>Salary</span>,
     cell: ({ row }) => {
       const salary = row.getValue("salary_range") as string | null;
       return (
-        <div className="stat-number text-sm text-white/50">
+        <div className="text-sm tabular-nums" style={cellTextStyle}>
           {salary ?? "\u2014"}
         </div>
       );
@@ -157,6 +173,7 @@ export const columns: ColumnDef<Application>[] = [
       const router = useRouter();
       const supabase = createClient();
       const [confirmOpen, setConfirmOpen] = useState(false);
+      const [editOpen, setEditOpen] = useState(false);
 
       async function handleDelete() {
         const { error } = await supabase
@@ -174,7 +191,8 @@ export const columns: ColumnDef<Application>[] = [
             <DropdownMenuTrigger asChild>
               <Button
                 variant="ghost"
-                className="h-8 w-8 p-0 text-white/30 hover:text-white/60"
+                className="h-8 w-8 p-0"
+                style={{ color: "#86868b" }}
               >
                 <span className="sr-only">Open menu</span>
                 <MoreHorizontal className="h-4 w-4" />
@@ -182,36 +200,49 @@ export const columns: ColumnDef<Application>[] = [
             </DropdownMenuTrigger>
             <DropdownMenuContent
               align="end"
-              className="border-white/[0.08] bg-black/90 backdrop-blur-xl"
+              style={{
+                background: "#ffffff",
+                border: "1px solid rgba(0,0,0,0.08)",
+                boxShadow: "0 12px 40px rgba(0,0,0,0.08)",
+              }}
             >
               {application.job_url && (
                 <>
-                  <DropdownMenuItem asChild className="text-white/60 focus:bg-white/[0.04] focus:text-white/80">
+                  <DropdownMenuItem asChild>
                     <a
                       href={application.job_url}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="flex items-center gap-2"
+                      style={{ color: "#1d1d1f" }}
                     >
                       <ExternalLink className="h-4 w-4" />
                       Open Job URL
                     </a>
                   </DropdownMenuItem>
-                  <DropdownMenuSeparator className="bg-white/[0.06]" />
+                  <DropdownMenuSeparator style={{ background: "rgba(0,0,0,0.06)" }} />
                 </>
               )}
+              <DropdownMenuItem
+                onClick={() => setEditOpen(true)}
+                style={{ color: "#1d1d1f" }}
+              >
+                <Pencil className="mr-2 h-4 w-4" />
+                Edit
+              </DropdownMenuItem>
+              <DropdownMenuSeparator style={{ background: "rgba(0,0,0,0.06)" }} />
               <DropdownMenuItem
                 onClick={() =>
                   navigator.clipboard.writeText(application.company_name)
                 }
-                className="text-white/60 focus:bg-white/[0.04] focus:text-white/80"
+                style={{ color: "#1d1d1f" }}
               >
                 Copy company name
               </DropdownMenuItem>
-              <DropdownMenuSeparator className="bg-white/[0.06]" />
+              <DropdownMenuSeparator style={{ background: "rgba(0,0,0,0.06)" }} />
               <DropdownMenuItem
-                className="text-red-400/70 focus:bg-red-500/10 focus:text-red-400"
                 onClick={() => setConfirmOpen(true)}
+                style={{ color: "#dc2626" }}
               >
                 <Trash2 className="mr-2 h-4 w-4" />
                 Delete
@@ -220,10 +251,17 @@ export const columns: ColumnDef<Application>[] = [
           </DropdownMenu>
 
           <AlertDialog open={confirmOpen} onOpenChange={setConfirmOpen}>
-            <AlertDialogContent className="border-white/[0.08] bg-black/95 backdrop-blur-xl">
+            <AlertDialogContent
+              style={{
+                background: "#ffffff",
+                border: "1px solid rgba(0,0,0,0.08)",
+              }}
+            >
               <AlertDialogHeader>
-                <AlertDialogTitle>Delete application?</AlertDialogTitle>
-                <AlertDialogDescription>
+                <AlertDialogTitle style={{ color: "#1d1d1f" }}>
+                  Delete application?
+                </AlertDialogTitle>
+                <AlertDialogDescription style={{ color: "#6e6e73" }}>
                   This will permanently delete your {application.company_name} application. This action cannot be undone.
                 </AlertDialogDescription>
               </AlertDialogHeader>
@@ -235,6 +273,12 @@ export const columns: ColumnDef<Application>[] = [
               </AlertDialogFooter>
             </AlertDialogContent>
           </AlertDialog>
+
+          <EditApplicationDialog
+            application={application}
+            open={editOpen}
+            onOpenChange={setEditOpen}
+          />
         </>
       );
     },
