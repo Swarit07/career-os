@@ -38,7 +38,8 @@ export function CsvExportButton({ data }: CsvExportButtonProps) {
   return (
     <button
       onClick={handleExport}
-      className="liquid-glass inline-flex items-center gap-2 px-4 py-2 text-xs font-medium text-white/60 transition-colors hover:text-white/90"
+      className="apple-btn-secondary"
+      style={{ padding: "8px 16px", fontSize: 13 }}
     >
       <Download className="h-3.5 w-3.5" />
       Download Manifest

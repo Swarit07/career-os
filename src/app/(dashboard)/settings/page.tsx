@@ -42,29 +42,29 @@ export default async function SettingsPage() {
         </FadeUp>
 
         <FadeUp delay={0.12}>
-          <div className="liquid-glass max-w-lg p-6">
+          <div className="apple-card max-w-lg p-6">
             <div className="flex items-center gap-4">
-              <Avatar className="h-14 w-14 border border-white/10">
+              <Avatar className="h-14 w-14 border border-[rgba(0,0,0,0.08)]">
                 <AvatarImage src={avatarUrl ?? undefined} />
-                <AvatarFallback className="bg-white/5 text-sm text-white/60">
+                <AvatarFallback className="bg-[#f5f5f7] text-sm text-[#6e6e73]">
                   {getInitials(fullName)}
                 </AvatarFallback>
               </Avatar>
               <div>
-                <p className="font-medium text-white/90">{fullName}</p>
-                <p className="text-sm text-white/40">{email}</p>
+                <p className="font-medium text-[#1d1d1f]">{fullName}</p>
+                <p className="text-sm text-[#6e6e73]">{email}</p>
               </div>
             </div>
-            <div className="mt-6 space-y-3 border-t border-white/[0.06] pt-5">
+            <div className="mt-6 space-y-3 border-t border-[rgba(0,0,0,0.06)] pt-5">
               <div className="flex items-center justify-between text-sm">
-                <span className="text-white/40">Member since</span>
-                <span className="font-mono text-white/60">
+                <span className="text-[#6e6e73]">Member since</span>
+                <span className="font-mono text-[#1d1d1f]">
                   {new Date(user.created_at).toLocaleDateString("en-US", { month: "long", year: "numeric" })}
                 </span>
               </div>
               <div className="flex items-center justify-between text-sm">
-                <span className="text-white/40">Auth provider</span>
-                <span className="font-mono text-white/60 capitalize">
+                <span className="text-[#6e6e73]">Auth provider</span>
+                <span className="font-mono text-[#1d1d1f] capitalize">
                   {user.app_metadata?.provider ?? "email"}
                 </span>
               </div>

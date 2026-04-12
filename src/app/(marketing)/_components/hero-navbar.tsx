@@ -1,35 +1,90 @@
+"use client";
+
 import Link from "next/link";
-import { Terminal, ArrowRight } from "lucide-react";
+import { motion } from "motion/react";
 
 export function HeroNavbar() {
   return (
-    <nav className="sticky top-0 z-20 border-b border-white/[0.06] bg-black/60 backdrop-blur-xl">
-      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
-        <Link href="/" className="flex items-center gap-3">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/10">
-            <Terminal className="h-4 w-4 text-white/80" />
-          </div>
-          <span className="font-serif text-lg italic text-white/90">
-            CareerOS
-          </span>
-        </Link>
-
-        <div className="flex items-center gap-3">
-          <Link
-            href="/login"
-            className="rounded-lg px-4 py-2 text-sm font-medium text-white/50 transition-colors hover:text-white/80"
-          >
-            Sign in
-          </Link>
-          <Link
-            href="/login"
-            className="liquid-glass-strong inline-flex items-center gap-2 px-5 py-2 text-sm font-medium text-white/90 transition-transform hover:scale-[1.02]"
-          >
-            Get Started
-            <ArrowRight className="h-3.5 w-3.5" />
-          </Link>
+    <motion.nav
+      initial={{ opacity: 0, y: -16 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, ease: [0.2, 0, 0.2, 1] as [number, number, number, number] }}
+      style={{
+        position: "fixed",
+        top: 0,
+        left: 0,
+        right: 0,
+        zIndex: 50,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+        padding: "0 32px",
+        height: 52,
+        background: "rgba(255,255,255,0.82)",
+        backdropFilter: "blur(20px)",
+        WebkitBackdropFilter: "blur(20px)",
+        borderBottom: "1px solid rgba(0,0,0,0.06)",
+      }}
+    >
+      {/* Logo */}
+      <Link
+        href="/"
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: 8,
+          textDecoration: "none",
+        }}
+      >
+        <div
+          style={{
+            width: 26,
+            height: 26,
+            background: "#0071e3",
+            borderRadius: 7,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <div
+            style={{
+              width: 10,
+              height: 10,
+              background: "#ffffff",
+              transform: "rotate(45deg)",
+              borderRadius: 2,
+            }}
+          />
         </div>
-      </div>
-    </nav>
+        <span
+          style={{
+            fontSize: 16,
+            fontWeight: 600,
+            color: "#1d1d1f",
+            letterSpacing: "-0.01em",
+          }}
+        >
+          CareerOS
+        </span>
+      </Link>
+
+      {/* CTA */}
+      <Link
+        href="/login"
+        style={{
+          padding: "7px 18px",
+          background: "#0071e3",
+          color: "#ffffff",
+          borderRadius: 99,
+          fontSize: 14,
+          fontWeight: 500,
+          textDecoration: "none",
+          transition: "background 0.15s",
+        }}
+      >
+        Get Started
+      </Link>
+    </motion.nav>
   );
 }

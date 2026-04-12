@@ -20,7 +20,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -65,7 +64,10 @@ export function ApplicationsDataTable({
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex flex-1 items-center gap-3">
           <div className="relative flex-1 sm:max-w-sm">
-            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-white/30" />
+            <Search
+              className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2"
+              style={{ color: "#a1a1a6" }}
+            />
             <Input
               placeholder="Filter companies..."
               value={
@@ -75,7 +77,7 @@ export function ApplicationsDataTable({
               onChange={(e) =>
                 table.getColumn("company_name")?.setFilterValue(e.target.value)
               }
-              className="border-white/[0.06] bg-white/[0.02] pl-10 text-sm text-white/80 placeholder:text-white/20 focus-visible:border-white/20 focus-visible:ring-white/10"
+              className="apple-input h-10 pl-10 text-sm"
             />
           </div>
           <Select
@@ -88,10 +90,15 @@ export function ApplicationsDataTable({
                 ?.setFilterValue(value === "all" ? undefined : value)
             }
           >
-            <SelectTrigger className="w-[160px] border-white/[0.06] bg-white/[0.02] text-sm text-white/60">
+            <SelectTrigger className="apple-input h-10 w-[160px] text-sm">
               <SelectValue placeholder="All statuses" />
             </SelectTrigger>
-            <SelectContent className="border-white/[0.08] bg-black/95 backdrop-blur-xl">
+            <SelectContent
+              style={{
+                background: "#ffffff",
+                border: "1px solid rgba(0,0,0,0.08)",
+              }}
+            >
               <SelectItem value="all">All statuses</SelectItem>
               <SelectItem value="Applied">Applied</SelectItem>
               <SelectItem value="Interviewing">Interviewing</SelectItem>
@@ -102,7 +109,7 @@ export function ApplicationsDataTable({
         </div>
         <button
           onClick={() => setDialogOpen(true)}
-          className="liquid-glass-strong inline-flex cursor-pointer items-center gap-2 px-6 py-2.5 text-sm font-medium text-white/90 transition-transform duration-200 hover:scale-[1.02]"
+          className="apple-btn-primary"
         >
           <Plus className="h-4 w-4" />
           New Application
@@ -110,18 +117,28 @@ export function ApplicationsDataTable({
       </div>
 
       {/* Table */}
-      <div className="overflow-hidden rounded-lg border border-white/[0.04]">
+      <div
+        className="overflow-hidden rounded-2xl"
+        style={{ border: "1px solid rgba(0,0,0,0.06)" }}
+      >
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow
                 key={headerGroup.id}
-                className="border-white/[0.04] hover:bg-transparent"
+                style={{
+                  borderBottom: "1px solid rgba(0,0,0,0.06)",
+                  background: "#fafafa",
+                }}
               >
                 {headerGroup.headers.map((header) => (
                   <TableHead
                     key={header.id}
-                    className="px-5 py-4 text-xs uppercase tracking-widest text-white/30"
+                    className="px-5 py-3.5 text-[11px] font-semibold uppercase"
+                    style={{
+                      color: "#86868b",
+                      letterSpacing: "0.1em",
+                    }}
                   >
                     {header.isPlaceholder
                       ? null
@@ -139,7 +156,8 @@ export function ApplicationsDataTable({
               table.getRowModel().rows.map((row) => (
                 <TableRow
                   key={row.id}
-                  className="app-row border-white/[0.04]"
+                  className="apple-row"
+                  style={{ borderBottom: "1px solid rgba(0,0,0,0.05)" }}
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id} className="px-5 py-4">
@@ -153,18 +171,17 @@ export function ApplicationsDataTable({
               ))
             ) : (
               <TableRow className="hover:bg-transparent">
-                <TableCell
-                  colSpan={columns.length}
-                  className="py-8"
-                >
-                  <div className="empty-state mx-auto max-w-sm">
-                    <div className="mb-2 text-[28px] opacity-30">&#9672;</div>
-                    <p className="font-serif text-sm italic text-[var(--text-muted)]">
+                <TableCell colSpan={columns.length} className="py-10">
+                  <div className="apple-empty mx-auto max-w-sm">
+                    <p
+                      className="apple-serif-italic text-base"
+                      style={{ color: "#86868b" }}
+                    >
                       Your next opportunity is out there. Fire off an application.
                     </p>
                     <button
                       onClick={() => setDialogOpen(true)}
-                      className="liquid-glass-strong mt-4 inline-flex cursor-pointer items-center gap-2 px-5 py-2.5 text-sm text-white/70 transition-transform duration-200 hover:scale-[1.02]"
+                      className="apple-btn-primary mt-5"
                     >
                       <Plus className="h-4 w-4" />
                       Add your first application
@@ -179,32 +196,39 @@ export function ApplicationsDataTable({
 
       {/* Pagination */}
       <div className="flex items-center justify-between px-1">
-        <p className="text-sm text-white/30">
+        <p className="text-sm" style={{ color: "#86868b" }}>
           {table.getFilteredRowModel().rows.length} application(s)
         </p>
         <div className="flex items-center gap-2">
-          <Button
-            variant="ghost"
-            size="sm"
+          <button
             onClick={() => table.previousPage()}
             disabled={!table.getCanPreviousPage()}
-            className="text-white/40 hover:text-white/60 disabled:text-white/10"
+            className="flex h-8 w-8 items-center justify-center rounded-full transition-colors disabled:opacity-30"
+            style={{
+              background: "#f5f5f7",
+              color: "#1d1d1f",
+            }}
           >
             <ChevronLeft className="h-4 w-4" />
-          </Button>
-          <span className="stat-number text-sm text-white/40">
+          </button>
+          <span
+            className="text-sm tabular-nums"
+            style={{ color: "#6e6e73" }}
+          >
             {table.getState().pagination.pageIndex + 1} /{" "}
             {table.getPageCount()}
           </span>
-          <Button
-            variant="ghost"
-            size="sm"
+          <button
             onClick={() => table.nextPage()}
             disabled={!table.getCanNextPage()}
-            className="text-white/40 hover:text-white/60 disabled:text-white/10"
+            className="flex h-8 w-8 items-center justify-center rounded-full transition-colors disabled:opacity-30"
+            style={{
+              background: "#f5f5f7",
+              color: "#1d1d1f",
+            }}
           >
             <ChevronRight className="h-4 w-4" />
-          </Button>
+          </button>
         </div>
       </div>
 
