@@ -76,18 +76,27 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-black p-6">
+    <div
+      className="flex min-h-screen items-center justify-center p-6"
+      style={{ background: "#f5f5f7" }}
+    >
       <div className="w-full max-w-md">
         {/* Brand mark */}
-        <div className="mb-10 flex flex-col items-center gap-4">
-          <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white/10">
-            <Terminal className="h-7 w-7 text-white/80" />
+        <div className="mb-8 flex flex-col items-center gap-3">
+          <div
+            className="flex h-14 w-14 items-center justify-center rounded-2xl"
+            style={{ background: "#1d1d1f" }}
+          >
+            <Terminal className="h-7 w-7" style={{ color: "#ffffff" }} />
           </div>
           <div className="text-center">
-            <h1 className="font-serif text-3xl italic text-white/90">
+            <h1
+              className="font-serif text-3xl italic"
+              style={{ color: "#1d1d1f" }}
+            >
               {mode === "login" ? "Welcome back" : "Create account"}
             </h1>
-            <p className="mt-2 text-base text-white/40">
+            <p className="mt-1.5 text-base" style={{ color: "#6e6e73" }}>
               {mode === "login"
                 ? "Sign in to CareerOS"
                 : "Start your career operating system"}
@@ -95,12 +104,17 @@ export default function LoginPage() {
           </div>
         </div>
 
-        <div className="liquid-glass space-y-6 p-8">
+        <div className="apple-card space-y-5 p-8">
           {/* Google OAuth */}
           <Button
             type="button"
             variant="outline"
-            className="h-12 w-full cursor-pointer gap-3 border-white/[0.08] bg-white/[0.02] text-base text-white/70 hover:bg-white/[0.05] hover:text-white/90"
+            className="h-12 w-full cursor-pointer gap-3 text-base"
+            style={{
+              background: "#ffffff",
+              border: "1px solid rgba(0,0,0,0.09)",
+              color: "#1d1d1f",
+            }}
             onClick={handleGoogleSignIn}
             disabled={googleLoading}
           >
@@ -114,15 +128,20 @@ export default function LoginPage() {
 
           {/* Divider */}
           <div className="flex items-center gap-4">
-            <div className="h-px flex-1 bg-white/[0.06]" />
-            <span className="text-xs uppercase tracking-widest text-white/30">or</span>
-            <div className="h-px flex-1 bg-white/[0.06]" />
+            <div className="h-px flex-1" style={{ background: "rgba(0,0,0,0.07)" }} />
+            <span
+              className="text-xs uppercase tracking-widest"
+              style={{ color: "#86868b" }}
+            >
+              or
+            </span>
+            <div className="h-px flex-1" style={{ background: "rgba(0,0,0,0.07)" }} />
           </div>
 
           {/* Email/password form */}
-          <form onSubmit={handleSubmit} className="space-y-5">
-            <div className="space-y-2">
-              <Label htmlFor="email" className="text-sm text-white/50">
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="space-y-1.5">
+              <Label htmlFor="email" className="text-sm" style={{ color: "#6e6e73" }}>
                 Email
               </Label>
               <Input
@@ -132,11 +151,11 @@ export default function LoginPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="h-12 border-white/[0.06] bg-white/[0.02] text-base text-white/80 placeholder:text-white/20 focus-visible:border-white/20 focus-visible:ring-white/10"
+                className="apple-input h-12 text-base"
               />
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="password" className="text-sm text-white/50">
+            <div className="space-y-1.5">
+              <Label htmlFor="password" className="text-sm" style={{ color: "#6e6e73" }}>
                 Password
               </Label>
               <Input
@@ -147,18 +166,18 @@ export default function LoginPage() {
                 onChange={(e) => setPassword(e.target.value)}
                 required
                 minLength={6}
-                className="h-12 border-white/[0.06] bg-white/[0.02] text-base text-white/80 placeholder:text-white/20 focus-visible:border-white/20 focus-visible:ring-white/10"
+                className="apple-input h-12 text-base"
               />
             </div>
 
             {error && (
-              <p className="text-sm text-red-400/70">{error}</p>
+              <p className="text-sm" style={{ color: "#dc2626" }}>{error}</p>
             )}
 
             <button
               type="submit"
               disabled={loading}
-              className="liquid-glass-strong inline-flex h-12 w-full cursor-pointer items-center justify-center gap-2 text-base font-medium text-white/90 transition-transform duration-200 hover:scale-[1.01] disabled:opacity-50"
+              className="apple-btn-primary h-12 w-full text-base"
             >
               {loading && <Loader2 className="h-5 w-5 animate-spin" />}
               {mode === "login" ? "Sign in" : "Sign up"}
@@ -167,11 +186,12 @@ export default function LoginPage() {
         </div>
 
         {/* Toggle mode */}
-        <p className="mt-6 text-center text-sm text-white/40">
+        <p className="mt-5 text-center text-sm" style={{ color: "#6e6e73" }}>
           {mode === "login" ? "Don't have an account?" : "Already have an account?"}{" "}
           <button
             type="button"
-            className="cursor-pointer text-white/70 underline underline-offset-4 hover:text-white/90"
+            className="cursor-pointer underline underline-offset-4"
+            style={{ color: "#0071e3" }}
             onClick={() => { setMode(mode === "login" ? "signup" : "login"); setError(null); }}
           >
             {mode === "login" ? "Sign up" : "Sign in"}
