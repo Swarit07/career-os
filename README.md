@@ -14,6 +14,8 @@
 
 <img src="docs/screenshots/dashboard.jpg" alt="CareerOS Command Center: greeting, pipeline bar, stat cards and the applications table" width="900">
 
+**▶ [Watch the 30-second promo](docs/media/careeros-promo-30s.mp4)**
+
 </div>
 
 ## Why
