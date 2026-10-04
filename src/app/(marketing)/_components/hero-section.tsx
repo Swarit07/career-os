@@ -42,8 +42,10 @@ function Typewriter({ phrases }: { phrases: string[] }) {
     } else if (deleting && displayed.length > 0) {
       timer.current = setTimeout(() => setDisplayed(displayed.slice(0, -1)), 32);
     } else {
-      setDeleting(false);
-      setIdx((i) => (i + 1) % phrases.length);
+      timer.current = setTimeout(() => {
+        setDeleting(false);
+        setIdx((i) => (i + 1) % phrases.length);
+      }, 0);
     }
 
     return () => clearTimeout(timer.current);
@@ -542,11 +544,11 @@ export function HeroSection() {
       <section style={{ background: "#ffffff", padding: "160px 40px", textAlign: "center" }}>
         <ScrollReveal yOffset={40} style={{ maxWidth: 960, margin: "0 auto" }}>
           <p style={{ fontSize: "clamp(26px, 4vw, 52px)", fontWeight: 300, letterSpacing: "-0.025em", lineHeight: 1.3, color: "#1d1d1f" }}>
-            "The job search is already hard enough.{" "}
+            &ldquo;The job search is already hard enough.{" "}
             <span style={{ fontFamily: "var(--font-instrument-serif)", fontStyle: "italic", fontWeight: 400 }}>
-              CareerOS makes sure the tools aren't what hold you back.
+              CareerOS makes sure the tools aren&apos;t what hold you back.
             </span>
-            "
+            &rdquo;
           </p>
           <p style={{ fontSize: 15, color: "#86868b", marginTop: 32, letterSpacing: "0.01em" }}>
             Built for serious job seekers who track their search like a professional.

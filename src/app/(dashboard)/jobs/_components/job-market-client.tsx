@@ -144,7 +144,12 @@ function SearchInput({
     return () => document.removeEventListener("mousedown", handleClick);
   }, []);
 
-  useEffect(() => { setActiveIndex(-1); }, [suggestions]);
+  // Reset the highlighted row when a new suggestion list arrives.
+  const [prevSuggestions, setPrevSuggestions] = useState(suggestions);
+  if (suggestions !== prevSuggestions) {
+    setPrevSuggestions(suggestions);
+    setActiveIndex(-1);
+  }
 
   const showDropdown = open && suggestions.length > 0;
 
