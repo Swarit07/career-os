@@ -2,6 +2,13 @@
   "name": "career-os",
   "version": "0.1.0",
   "private": true,
+  "description": "A job-search command center: application tracking, AI resume tailoring, live job search, and an AI career coach.",
+  "license": "MIT",
+  "author": "Swarit Sheel",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Swarit07/career-os.git"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
