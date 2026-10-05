@@ -1,0 +1,263 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 1920px; height: 1080px; overflow: hidden; }
+  body {
+    font-family: Inter, sans-serif; color: #1d1d1f; -webkit-font-smoothing: antialiased;
+    background: radial-gradient(1200px 700px at 70% 30%, #e8f1ff 0%, transparent 60%),
+                radial-gradient(900px 600px at 15% 85%, #f1ecff 0%, transparent 60%), #f7f8fb;
+  }
+  .scene { position: absolute; inset: 0; opacity: 0; }
+  .eyebrow { position: absolute; left: 120px; top: 92px; font: 700 18px/1 Inter; letter-spacing: .22em; text-transform: uppercase; color: #0071e3; }
+  .title { position: absolute; left: 118px; top: 124px; font: 800 64px/1.05 Inter; letter-spacing: -0.035em; }
+  .title em { font-family: 'Instrument Serif', serif; font-style: italic; font-weight: 400; letter-spacing: -0.01em; color: #0071e3; }
+  .win { position: absolute; border-radius: 18px; overflow: hidden; background: #fff;
+         box-shadow: 0 50px 120px -30px rgba(20,40,90,.28), 0 0 0 1px rgba(0,0,0,.06); }
+  .win .bar { height: 34px; background: #f2f3f6; display: flex; align-items: center; gap: 8px; padding: 0 14px; border-bottom: 1px solid #e6e7eb; }
+  .win .bar i { width: 11px; height: 11px; border-radius: 99px; background: #ff5f57; display: block; }
+  .win .bar i:nth-child(2) { background: #febc2e; } .win .bar i:nth-child(3) { background: #28c840; }
+  .win .bar span { margin-left: 14px; font: 500 13px JetBrains Mono, monospace; color: #8a8f98; }
+  .win img { display: block; width: 100%; }
+  .chip { position: absolute; display: flex; align-items: center; gap: 10px; padding: 12px 18px; border-radius: 14px; background: #fff;
+          box-shadow: 0 14px 40px -12px rgba(20,40,90,.25), 0 0 0 1px rgba(0,0,0,.05); font: 600 19px Inter; white-space: nowrap; }
+  .chip b { width: 10px; height: 10px; border-radius: 99px; background: #0071e3; display: block; }
+  .stat { position: absolute; padding: 18px 24px; border-radius: 16px; background: #fff; box-shadow: 0 18px 50px -14px rgba(20,40,90,.28), 0 0 0 1px rgba(0,0,0,.05); }
+  .stat .n { font: 800 54px/1 Inter; letter-spacing: -0.03em; }
+  .stat .l { margin-top: 6px; font: 500 16px Inter; color: #6e6e73; }
+  .mark { width: 120px; height: 120px; border-radius: 30px; background: #0071e3; display: grid; place-items: center; box-shadow: 0 24px 60px -16px rgba(0,113,227,.6); }
+  .mark i { width: 44px; height: 44px; background: #fff; border-radius: 8px; transform: rotate(45deg); display: block; }
+  .center { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+  .foot { position: absolute; left: 0; right: 0; bottom: 46px; text-align: center; font: 500 15px JetBrains Mono, monospace; color: #8a8f98; }
+  /* kanban */
+  .kb { position: absolute; display: grid; grid-template-columns: repeat(4, 1fr); gap: 22px; }
+  .col { border-radius: 18px; background: #f4f6fa; padding: 16px; border-top: 4px solid var(--c); }
+  .col h4 { display: flex; justify-content: space-between; font: 700 15px Inter; letter-spacing: .14em; text-transform: uppercase; color: var(--c); margin-bottom: 14px; }
+  .col h4 span { font: 600 14px Inter; background: #fff; border-radius: 99px; padding: 2px 10px; }
+  .card { background: #fff; border-radius: 14px; padding: 16px 18px; margin-bottom: 12px; box-shadow: 0 1px 0 rgba(0,0,0,.04), 0 0 0 1px rgba(0,0,0,.05); }
+  .card .c { font: 700 21px Inter; } .card .r { font: 500 15px Inter; color: #6e6e73; margin-top: 3px; } .card .m { font: 500 13px JetBrains Mono, monospace; color: #9a9ca3; margin-top: 10px; }
+  .fly { position: absolute; width: 0; }
+  /* resume */
+  .pane { position: absolute; border-radius: 18px; background: #fff; box-shadow: 0 30px 80px -24px rgba(20,40,90,.25), 0 0 0 1px rgba(0,0,0,.06); padding: 28px 32px; }
+  .pane h5 { font: 700 14px Inter; letter-spacing: .2em; text-transform: uppercase; color: #8a8f98; margin-bottom: 16px; }
+  .line { height: 12px; border-radius: 99px; background: #eceef2; margin: 12px 0; }
+  .out { font: 500 22px/1.55 Inter; color: #1d1d1f; white-space: pre-wrap; }
+  .out .hl { background: #e6f0ff; color: #0058b0; border-radius: 6px; padding: 0 4px; }
+  .caret { display: inline-block; width: 3px; height: 26px; background: #0071e3; vertical-align: -5px; margin-left: 2px; }
+  /* chat */
+  .bubble { position: absolute; max-width: 980px; padding: 22px 28px; border-radius: 26px; font: 500 26px/1.5 Inter; }
+  .me { right: 300px; background: #0071e3; color: #fff; border-bottom-right-radius: 8px; }
+  .ai { left: 300px; background: #fff; color: #1d1d1f; border-bottom-left-radius: 8px; box-shadow: 0 24px 60px -20px rgba(20,40,90,.25), 0 0 0 1px rgba(0,0,0,.05); }
+  .ai .who { font: 700 14px Inter; letter-spacing: .18em; text-transform: uppercase; color: #8b5cf6; margin-bottom: 8px; }
+</style>
+</head>
+<body>
+
+<!-- S1 logo -->
+<section class="scene" id="s1"><div class="center">
+  <div class="mark" id="s1mark"><i></i></div>
+  <div id="s1name" style="margin-top:34px;font:800 108px/1 Inter;letter-spacing:-0.045em">CareerOS</div>
+  <div id="s1tag" style="margin-top:20px;font:400 40px 'Instrument Serif',serif;font-style:italic;color:#6e6e73">the command center for your job search</div>
+</div></section>
+
+<!-- S2 landing + feature chips -->
+<section class="scene" id="s2">
+  <div class="win" id="s2win" style="left:460px;top:170px;width:1000px"><div class="bar"><i></i><i></i><i></i><span>career-os</span></div><img src="landing.jpg" /></div>
+  <div class="chip" data-x="230" data-y="250"><b></b>Kanban pipeline</div>
+  <div class="chip" data-x="190" data-y="470"><b style="background:#8b5cf6"></b>AI resume tailoring</div>
+  <div class="chip" data-x="260" data-y="690"><b style="background:#16a34a"></b>Live job search</div>
+  <div class="chip" data-x="1500" data-y="230"><b style="background:#d97706"></b>AI career coach</div>
+  <div class="chip" data-x="1520" data-y="450"><b style="background:#dc2626"></b>Row-level security</div>
+  <div class="chip" data-x="1480" data-y="670"><b style="background:#0ea5e9"></b>Analytics + CSV</div>
+</section>
+
+<!-- S3 dashboard -->
+<section class="scene" id="s3">
+  <div class="eyebrow">Command center</div>
+  <div class="title">Every application, <em>one view.</em></div>
+  <div class="win" id="s3win" style="left:120px;top:250px;width:1240px"><div class="bar"><i></i><i></i><i></i><span>/dashboard</span></div><img src="dashboard.jpg" /></div>
+  <div class="stat" id="s3a" style="left:1440px;top:300px"><div class="n">12</div><div class="l">applications tracked</div></div>
+  <div class="stat" id="s3b" style="left:1440px;top:480px"><div class="n" style="color:#0071e3">33%</div><div class="l">response rate</div></div>
+  <div class="stat" id="s3c" style="left:1440px;top:660px"><div class="n" style="color:#16a34a">1 offer</div><div class="l">Stripe · SWE intern</div></div>
+</section>
+
+<!-- S4 kanban -->
+<section class="scene" id="s4">
+  <div class="eyebrow">Pipeline</div>
+  <div class="title">Move a card. <em>Move your search.</em></div>
+  <div class="kb" style="left:120px;right:120px;top:290px">
+    <div class="col" style="--c:#0071e3"><h4>Applied <span id="nA">6</span></h4>
+      <div class="card"><div class="c">Ramp</div><div class="r">Software Engineer Intern</div><div class="m">New York, NY</div></div>
+      <div class="card"><div class="c">NVIDIA</div><div class="r">Hardware Verification Intern</div><div class="m">Santa Clara, CA</div></div>
+      <div class="card"><div class="c">Vercel</div><div class="r">Software Engineer Intern</div><div class="m">Remote</div></div>
+    </div>
+    <div class="col" style="--c:#d97706"><h4>Interviewing <span id="nI">3</span></h4>
+      <div class="card" id="ghost" style="visibility:hidden"><div class="c">Figma</div><div class="r">Product Engineering Intern</div><div class="m">New York, NY</div></div>
+      <div class="card"><div class="c">Caterpillar</div><div class="r">Embedded Software Intern</div><div class="m">Peoria, IL</div></div>
+      <div class="card"><div class="c">John Deere</div><div class="r">Embedded Systems Intern</div><div class="m">Moline, IL</div></div>
+    </div>
+    <div class="col" style="--c:#16a34a"><h4>Offer <span id="nO">1</span></h4>
+      <div class="card" id="slot" style="visibility:hidden"><div class="c">Figma</div><div class="r">Product Engineering Intern</div><div class="m">New York, NY</div></div>
+      <div class="card"><div class="c">Stripe</div><div class="r">Software Engineer Intern</div><div class="m">San Francisco, CA</div></div>
+    </div>
+    <div class="col" style="--c:#dc2626"><h4>Rejected <span>2</span></h4>
+      <div class="card"><div class="c">Tesla</div><div class="r">Firmware Engineering Intern</div><div class="m">Palo Alto, CA</div></div>
+      <div class="card"><div class="c">Qualcomm</div><div class="r">SoC Design Intern</div><div class="m">San Diego, CA</div></div>
+    </div>
+  </div>
+  <div class="card" id="mover" style="position:absolute;margin:0"><div class="c">Figma</div><div class="r">Product Engineering Intern</div><div class="m">New York, NY</div></div>
+</section>
+
+<!-- S5 resume forge -->
+<section class="scene" id="s5">
+  <div class="eyebrow" style="color:#8b5cf6">Resume forge</div>
+  <div class="title">Tailored to <em style="color:#8b5cf6">every role.</em></div>
+  <div class="pane" id="s5l" style="left:120px;top:280px;width:600px;height:640px">
+    <h5>Your resume</h5>
+    <div class="line" style="width:60%"></div><div class="line" style="width:92%"></div><div class="line" style="width:85%"></div><div class="line" style="width:88%"></div>
+    <div class="line" style="width:40%;margin-top:30px"></div><div class="line" style="width:95%"></div><div class="line" style="width:80%"></div>
+    <h5 style="margin-top:42px">Job description · Stripe</h5>
+    <div class="line" style="width:90%"></div><div class="line" style="width:76%"></div><div class="line" style="width:84%"></div>
+  </div>
+  <div class="pane" id="s5r" style="left:780px;top:280px;width:1020px;height:640px">
+    <h5 style="color:#8b5cf6">Tailored output · streaming</h5>
+    <div class="out" id="s5out"></div>
+  </div>
+</section>
+
+<!-- S6 concierge -->
+<section class="scene" id="s6">
+  <div class="eyebrow" style="color:#d97706">AI concierge</div>
+  <div class="title">A coach that knows <em style="color:#d97706">your pipeline.</em></div>
+  <div class="bubble me" id="s6q" style="top:330px">How is my pipeline looking?</div>
+  <div class="bubble ai" id="s6a" style="top:470px"><div class="who">Concierge</div><span id="s6txt"></span></div>
+</section>
+
+<!-- S7 private -->
+<section class="scene" id="s7"><div class="center">
+  <div style="font:700 18px Inter;letter-spacing:.22em;text-transform:uppercase;color:#16a34a">Private by default</div>
+  <div style="margin-top:22px;font:800 84px/1.05 Inter;letter-spacing:-0.04em">Your data <em style="font-family:'Instrument Serif',serif;font-weight:400;color:#16a34a">stays yours.</em></div>
+  <div style="display:flex;gap:22px;margin-top:56px">
+    <div class="chip p7" style="position:static"><b style="background:#16a34a"></b>Postgres row-level security</div>
+    <div class="chip p7" style="position:static"><b style="background:#8b5cf6"></b>AI on a local model (Ollama)</div>
+    <div class="chip p7" style="position:static"><b></b>Open source · MIT</div>
+  </div>
+</div></section>
+
+<!-- S8 end card -->
+<section class="scene" id="s8"><div class="center">
+  <div class="mark" id="s8mark"><i></i></div>
+  <div style="margin-top:30px;font:800 104px/1 Inter;letter-spacing:-0.045em">CareerOS</div>
+  <div id="s8tag" style="margin-top:22px;font:600 34px Inter;color:#6e6e73">Track. <span style="color:#0071e3">Tailor.</span> <span style="font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;color:#1d1d1f">Land.</span></div>
+</div>
+<div class="foot">github.com/Swarit07/career-os · Next.js 16 · Supabase · Vercel AI SDK</div>
+</section>
+
+<script>
+const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
+const p = (t, a, b) => clamp((t - a) / (b - a));
+const outC = (x) => 1 - Math.pow(1 - x, 3);
+const inOut = (x) => (x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2);
+const $ = (id) => document.getElementById(id);
+
+// scene windows [start, end]; 0.45s cross-fades
+const S = { s1: [0, 3], s2: [3, 6.8], s3: [6.8, 11.2], s4: [11.2, 15.6], s5: [15.6, 20], s6: [20, 24.2], s7: [24.2, 27], s8: [27, 30.01] };
+const FADE = 0.45;
+
+function sceneAlpha(t, [a, b]) {
+  if (t < a - 0.001 || t > b) return 0;
+  const i = a === 0 ? 1 : outC(p(t, a, a + FADE));
+  const o = b >= 30 ? 1 : 1 - p(t, b - FADE, b);
+  return Math.min(i, o);
+}
+function rise(el, t, a, d = 0.6, dist = 40) {
+  const k = outC(p(t, a, a + d));
+  el.style.opacity = k;
+  el.style.transform = `translateY(${(1 - k) * dist}px)`;
+}
+
+const AI_TEXT = "You have 12 applications: 3 interviewing, 1 offer, 2 rejections. A 33% response rate is solid for internship season. Next step: follow up with Ramp and NVIDIA, both quiet for 10+ days.";
+const RESUME = [
+  ["Software Engineer Intern · ", "Stripe"],
+  ["\n\n• Built a ", "payments-style ledger", " in TypeScript with idempotent writes and full test coverage"],
+  ["\n• Designed ", "REST APIs", " backed by Postgres, cutting p95 latency 40%"],
+  ["\n• Shipped weekly to production with ", "CI/CD", " and code review"],
+];
+
+function typed(segs, n) {
+  let out = "", left = n;
+  for (const seg of segs) {
+    seg.forEach((part, i) => {
+      if (left <= 0) return;
+      const take = part.slice(0, left); left -= take.length;
+      out += i % 2 === 1 ? `<span class="hl">${take}</span>` : take;
+    });
+  }
+  return out;
+}
+const totalLen = RESUME.flat().join("").length;
+
+function render(t) {
+  for (const [id, w] of Object.entries(S)) $(id).style.opacity = sceneAlpha(t, w);
+
+  // S1
+  { const k = outC(p(t, 0.1, 1.0)); $("s1mark").style.transform = `scale(${0.6 + 0.4 * k}) rotate(${(1 - k) * -40}deg)`; $("s1mark").style.opacity = k;
+    rise($("s1name"), t, 0.45, 0.8, 50); rise($("s1tag"), t, 0.9, 0.8, 30);
+    const z = p(t, 2.2, 3); $("s1").style.transform = `scale(${1 + z * 0.06})`; }
+
+  // S2
+  { const k = inOut(p(t, 3, 6.8)); $("s2win").style.transform = `perspective(2000px) rotateX(${8 - 8 * k}deg) scale(${0.94 + 0.08 * k})`;
+    document.querySelectorAll("#s2 .chip").forEach((c, i) => {
+      const a = 3.5 + i * 0.22, kk = outC(p(t, a, a + 0.55));
+      const fx = +c.dataset.x, fy = +c.dataset.y, cx = 960, cy = 540;
+      c.style.left = `${cx + (fx - cx) * kk}px`; c.style.top = `${cy + (fy - cy) * kk}px`;
+      c.style.opacity = kk; c.style.transform = `scale(${0.7 + 0.3 * kk}) translateY(${Math.sin((t + i) * 2) * 4}px)`;
+    }); }
+
+  // S3
+  { rise($("s3win"), t, 6.9, 0.8, 80); const pan = p(t, 7.6, 11.2); $("s3win").style.transform += ` scale(${1 + pan * 0.03})`;
+    rise($("s3a"), t, 7.8); rise($("s3b"), t, 8.2); rise($("s3c"), t, 8.6);
+    $("s3a").querySelector(".n").textContent = Math.round(12 * outC(p(t, 7.8, 8.8)));
+    $("s3b").querySelector(".n").textContent = Math.round(33 * outC(p(t, 8.2, 9.2))) + "%"; }
+
+  // S4: Figma card flies Interviewing → Offer; its old spot closes and the new one opens
+  { const full = $("mover").offsetHeight;
+    const gk = p(t, 13.5, 14.1), sk = inOut(p(t, 12.6, 13.5));
+    $("ghost").style.height = `${full * (1 - gk)}px`; $("ghost").style.marginBottom = `${12 * (1 - gk)}px`; $("ghost").style.padding = gk >= 1 ? "0" : "";
+    $("slot").style.height = `${full * sk}px`; $("slot").style.marginBottom = `${12 * sk}px`; $("slot").style.padding = sk <= 0 ? "0" : "";
+    $("ghost").style.overflow = $("slot").style.overflow = "hidden";
+    const g = $("ghost").getBoundingClientRect(), s = $("slot").getBoundingClientRect(), m = $("mover");
+    const k = inOut(p(t, 12.5, 13.7));
+    const x = g.left + (s.left - g.left) * k, y = g.top + (s.top - g.top) * k - Math.sin(k * Math.PI) * 90;
+    m.style.left = `${x}px`; m.style.top = `${y}px`; m.style.width = `${g.width}px`;
+    const lift = Math.sin(k * Math.PI);
+    m.style.transform = `rotate(${lift * -4}deg) scale(${1 + lift * 0.06})`;
+    m.style.boxShadow = `0 ${10 + lift * 40}px ${30 + lift * 50}px -10px rgba(20,40,90,${0.15 + lift * 0.2})${k >= 1 ? ", 0 0 0 3px #16a34a" : ""}`;
+    $("nI").textContent = k >= 0.5 ? 2 : 3; $("nO").textContent = k >= 0.5 ? 2 : 1;
+    document.querySelectorAll("#s4 .col").forEach((c, i) => { const kk = outC(p(t, 11.3 + i * 0.12, 11.9 + i * 0.12)); c.style.opacity = kk; c.style.transform = `translateY(${(1 - kk) * 50}px)`; });
+    m.style.opacity = outC(p(t, 11.42, 12.0)); }
+
+  // S5: tailored text streams in
+  { rise($("s5l"), t, 15.7, 0.7); rise($("s5r"), t, 15.9, 0.7);
+    const n = Math.floor(totalLen * p(t, 16.5, 19.3));
+    $("s5out").innerHTML = typed(RESUME, n) + (t < 19.6 ? '<span class="caret"></span>' : ""); }
+
+  // S6: question, then streaming answer
+  { rise($("s6q"), t, 20.3, 0.5, 30); rise($("s6a"), t, 21.0, 0.5, 30);
+    $("s6txt").textContent = AI_TEXT.slice(0, Math.floor(AI_TEXT.length * p(t, 21.2, 23.8))); }
+
+  // S7
+  { document.querySelectorAll(".p7").forEach((c, i) => rise(c, t, 24.7 + i * 0.25, 0.6, 30)); }
+
+  // S8
+  { const k = outC(p(t, 27.1, 27.9)); $("s8mark").style.transform = `scale(${0.7 + 0.3 * k}) rotate(${(1 - k) * 45}deg)`; $("s8mark").style.opacity = k;
+    rise($("s8tag"), t, 27.7, 0.8, 24); }
+}
+window.render = render;
+render(0);
+</script>
+</body>
+</html>
