@@ -1,12 +1,14 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useState, useActionState } from "react";
+import Link from "next/link";
 import { Terminal, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { createClient } from "@/lib/supabase/client";
+import { loginAction, signupAction } from "./actions";
+import { PASSWORD_MIN, type ActionState } from "./constants";
 
 function GoogleIcon() {
   return (
@@ -32,48 +34,30 @@ function GoogleIcon() {
 }
 
 export default function LoginPage() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [googleLoading, setGoogleLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
   const [mode, setMode] = useState<"login" | "signup">("login");
-  const router = useRouter();
-  const supabase = createClient();
+  const [googleLoading, setGoogleLoading] = useState(false);
+  const [googleError, setGoogleError] = useState<string | null>(null);
+
+  const [state, action, pending] = useActionState<ActionState, FormData>(
+    mode === "login" ? loginAction : signupAction,
+    null
+  );
 
   async function handleGoogleSignIn() {
     setGoogleLoading(true);
-    setError(null);
+    setGoogleError(null);
+    const supabase = createClient();
     const { error } = await supabase.auth.signInWithOAuth({
       provider: "google",
       options: { redirectTo: `${window.location.origin}/auth/callback` },
     });
     if (error) {
-      setError(error.message);
+      setGoogleError("Could not start Google sign-in. Please try again.");
       setGoogleLoading(false);
     }
   }
 
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    setLoading(true);
-    setError(null);
-
-    if (mode === "login") {
-      const { error } = await supabase.auth.signInWithPassword({ email, password });
-      if (error) { setError(error.message); setLoading(false); return; }
-    } else {
-      const { error } = await supabase.auth.signUp({
-        email,
-        password,
-        options: { emailRedirectTo: `${window.location.origin}/auth/callback` },
-      });
-      if (error) { setError(error.message); setLoading(false); return; }
-    }
-
-    router.push("/dashboard");
-    router.refresh();
-  }
+  const formError = state?.error ?? googleError;
 
   return (
     <div
@@ -81,7 +65,6 @@ export default function LoginPage() {
       style={{ background: "#f5f5f7" }}
     >
       <div className="w-full max-w-md">
-        {/* Brand mark */}
         <div className="mb-8 flex flex-col items-center gap-3">
           <div
             className="flex h-14 w-14 items-center justify-center rounded-2xl"
@@ -105,7 +88,6 @@ export default function LoginPage() {
         </div>
 
         <div className="apple-card space-y-5 p-8">
-          {/* Google OAuth */}
           <Button
             type="button"
             variant="outline"
@@ -126,7 +108,6 @@ export default function LoginPage() {
             Continue with Google
           </Button>
 
-          {/* Divider */}
           <div className="flex items-center gap-4">
             <div className="h-px flex-1" style={{ background: "rgba(0,0,0,0.07)" }} />
             <span
@@ -138,61 +119,82 @@ export default function LoginPage() {
             <div className="h-px flex-1" style={{ background: "rgba(0,0,0,0.07)" }} />
           </div>
 
-          {/* Email/password form */}
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form action={action} className="space-y-4">
             <div className="space-y-1.5">
               <Label htmlFor="email" className="text-sm" style={{ color: "#6e6e73" }}>
                 Email
               </Label>
               <Input
                 id="email"
+                name="email"
                 type="email"
                 placeholder="you@example.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
                 required
+                autoComplete="email"
                 className="apple-input h-12 text-base"
               />
             </div>
             <div className="space-y-1.5">
-              <Label htmlFor="password" className="text-sm" style={{ color: "#6e6e73" }}>
-                Password
-              </Label>
+              <div className="flex items-center justify-between">
+                <Label htmlFor="password" className="text-sm" style={{ color: "#6e6e73" }}>
+                  Password
+                </Label>
+                {mode === "login" && (
+                  <Link
+                    href="/forgot-password"
+                    className="text-xs underline underline-offset-4"
+                    style={{ color: "#0071e3" }}
+                  >
+                    Forgot?
+                  </Link>
+                )}
+              </div>
               <Input
                 id="password"
+                name="password"
                 type="password"
-                placeholder="••••••••"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                placeholder="••••••••••"
                 required
-                minLength={6}
+                minLength={mode === "signup" ? PASSWORD_MIN : 1}
+                autoComplete={
+                  mode === "signup" ? "new-password" : "current-password"
+                }
                 className="apple-input h-12 text-base"
               />
+              {mode === "signup" && (
+                <p className="text-xs" style={{ color: "#86868b" }}>
+                  Use at least {PASSWORD_MIN} characters.
+                </p>
+              )}
             </div>
 
-            {error && (
-              <p className="text-sm" style={{ color: "#dc2626" }}>{error}</p>
+            {formError && (
+              <p className="text-sm" style={{ color: "#dc2626" }}>
+                {formError}
+              </p>
             )}
 
             <button
               type="submit"
-              disabled={loading}
+              disabled={pending}
               className="apple-btn-primary h-12 w-full text-base"
             >
-              {loading && <Loader2 className="h-5 w-5 animate-spin" />}
+              {pending && <Loader2 className="h-5 w-5 animate-spin" />}
               {mode === "login" ? "Sign in" : "Sign up"}
             </button>
           </form>
         </div>
 
-        {/* Toggle mode */}
         <p className="mt-5 text-center text-sm" style={{ color: "#6e6e73" }}>
           {mode === "login" ? "Don't have an account?" : "Already have an account?"}{" "}
           <button
             type="button"
             className="cursor-pointer underline underline-offset-4"
             style={{ color: "#0071e3" }}
-            onClick={() => { setMode(mode === "login" ? "signup" : "login"); setError(null); }}
+            onClick={() => {
+              setMode(mode === "login" ? "signup" : "login");
+              setGoogleError(null);
+            }}
           >
             {mode === "login" ? "Sign up" : "Sign in"}
           </button>

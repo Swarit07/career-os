@@ -32,10 +32,18 @@ function KanbanCard({ app }: { app: Application }) {
   async function handleStatusChange(newStatus: ApplicationStatus) {
     setUpdating(true);
     const supabase = createClient();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    if (!user) {
+      setUpdating(false);
+      return;
+    }
     await supabase
       .from("applications")
       .update({ status: newStatus } as never)
-      .eq("id", app.id as never);
+      .eq("id", app.id as never)
+      .eq("user_id", user.id as never);
     router.refresh();
     setUpdating(false);
   }

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { useRouter, usePathname } from "next/navigation";
+import { usePathname } from "next/navigation";
 import {
   LayoutDashboard,
   LogOut,
@@ -30,7 +30,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { createClient } from "@/lib/supabase/client";
 import { NewApplicationDialog } from "./new-application-dialog";
 
 interface DashboardShellProps {
@@ -125,14 +124,6 @@ function BrandMark() {
 export function DashboardShell({ user, children }: DashboardShellProps) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [quickAddOpen, setQuickAddOpen] = useState(false);
-  const router = useRouter();
-  const supabase = createClient();
-
-  async function handleSignOut() {
-    await supabase.auth.signOut();
-    router.push("/login");
-    router.refresh();
-  }
 
   return (
     <div
@@ -342,12 +333,16 @@ export function DashboardShell({ user, children }: DashboardShellProps) {
               <DropdownMenuSeparator
                 style={{ background: "rgba(0,0,0,0.06)" }}
               />
-              <DropdownMenuItem
-                onClick={handleSignOut}
-                style={{ color: "#6e6e73" }}
-              >
-                <LogOut className="mr-2 h-4 w-4" />
-                Sign out
+              <DropdownMenuItem asChild style={{ color: "#6e6e73" }}>
+                <form action="/auth/signout" method="POST" className="w-full">
+                  <button
+                    type="submit"
+                    className="flex w-full cursor-pointer items-center"
+                  >
+                    <LogOut className="mr-2 h-4 w-4" />
+                    Sign out
+                  </button>
+                </form>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

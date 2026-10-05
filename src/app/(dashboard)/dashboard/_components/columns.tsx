@@ -176,10 +176,15 @@ export const columns: ColumnDef<Application>[] = [
       const [editOpen, setEditOpen] = useState(false);
 
       async function handleDelete() {
+        const {
+          data: { user },
+        } = await supabase.auth.getUser();
+        if (!user) return;
         const { error } = await supabase
           .from("applications")
           .delete()
-          .eq("id", application.id as never);
+          .eq("id", application.id as never)
+          .eq("user_id", user.id as never);
         if (!error) {
           router.refresh();
         }

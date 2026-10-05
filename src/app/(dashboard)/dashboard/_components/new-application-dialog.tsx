@@ -366,6 +366,15 @@ export function EditApplicationDialog({
     setLoading(true);
     setError(null);
 
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    if (!user) {
+      setError("You must be signed in.");
+      setLoading(false);
+      return;
+    }
+
     const { error: updateError } = await supabase
       .from("applications")
       .update({
@@ -378,7 +387,8 @@ export function EditApplicationDialog({
         applied_date: form.applied_date || null,
         notes: form.notes.trim() || null,
       } as never)
-      .eq("id", application.id as never);
+      .eq("id", application.id as never)
+      .eq("user_id", user.id as never);
 
     setLoading(false);
     if (updateError) { setError(updateError.message); return; }
